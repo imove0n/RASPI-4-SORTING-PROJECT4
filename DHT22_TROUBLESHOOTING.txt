@@ -1,0 +1,94 @@
+DHT22 SENSOR TROUBLESHOOTING GUIDE
+====================================
+
+WHY DO SENSOR ERRORS HAPPEN?
+-----------------------------
+DHT22 sensors are sensitive and NORMAL to have occasional read errors.
+These errors happen because:
+
+1. The sensor uses a single-wire communication protocol that's timing-sensitive
+2. Reading too fast (needs 2+ seconds between readings)
+3. Electrical interference
+4. Loose connections
+
+NORMAL vs PROBLEM:
+------------------
+NORMAL (Don't worry):
+  - 1-2 errors every 10-20 readings
+  - Occasional "checksum" errors
+  - "Buffer not returned" errors sometimes
+  - Success rate above 70% is good
+
+PROBLEM (Check wiring):
+  - 5+ consecutive errors
+  - "DHT sensor not found" constantly
+  - Success rate below 50%
+  - No successful readings at all
+
+
+HOW TO PREVENT/FIX ERRORS:
+--------------------------
+
+1. CHECK WIRING:
+   Pin 1 (left) → Pi Pin 1 (3.3V)     - Power
+   Pin 2        → Pi Pin 7 (GPIO4)    - Data
+   Pin 3        → Not connected       - NC
+   Pin 4 (right)→ Pi Pin 6 (GND)      - Ground
+
+   Make sure all wires are FIRMLY connected!
+
+2. POWER ISSUES:
+   - Use 3.3V (Pin 1) instead of 5V for stability
+   - Check GND connection is solid
+   - Don't use damaged cables
+
+3. TIMING:
+   - Wait at least 2-3 seconds between readings
+   - Don't run multiple scripts at the same time
+   - Let sensor rest 10 seconds if getting errors
+
+4. PHYSICAL CHECKS:
+   - Make sure sensor isn't damaged
+   - Check for bent pins
+   - Verify it's a DHT22 (not DHT11)
+   - Keep wires short (under 20cm is better)
+
+5. WHEN RUNNING SCRIPTS:
+   - If you just ran a script, wait 10 seconds before running another
+   - Don't use Ctrl+C and immediately re-run - give it a moment
+   - The improved scripts now handle errors automatically
+
+
+IMPROVED ERROR HANDLING:
+-------------------------
+The updated dht22_monitor.py now:
+  ✓ Waits 3 seconds on startup for sensor to stabilize
+  ✓ Shows clear error messages
+  ✓ Warns after 5 consecutive errors
+  ✓ Shows success rate when you exit
+  ✓ Automatically retries failed reads
+
+
+WHAT TO DO IF ERRORS PERSIST:
+------------------------------
+1. Wait 30 seconds, don't touch anything
+2. Check all 3 wire connections are FIRM
+3. Run: python3 test_gpio.py
+4. If test passes but monitor fails:
+   - Sensor is OK, just needs recovery time
+   - Wait 1-2 minutes between runs
+5. If test also fails:
+   - Check wiring again
+   - Try different jumper wires
+   - Make sure 3.3V pin has power
+
+
+QUICK FIX CHECKLIST:
+--------------------
+[ ] Wait 30 seconds since last script run
+[ ] Press all 3 wire connections firmly
+[ ] Verify GPIO4 (Pin 7) has data wire
+[ ] Verify Pin 1 has VCC wire
+[ ] Verify Pin 6 has GND wire
+[ ] Run: python3 test_gpio.py
+[ ] If successful, run: python3 dht22_monitor.py
