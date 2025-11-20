@@ -89,6 +89,16 @@ def index():
 def get_data():
     """API endpoint for sensor data"""
     data = read_sensor()
+    # Add mock sorting data for thesis demo
+    import random
+    data['sorting'] = {
+        'unripe': random.randint(45, 55),
+        'ripe': random.randint(80, 95),
+        'overripe': random.randint(15, 25),
+        'defect': random.randint(5, 12),
+        'total_sorted': random.randint(150, 180),
+        'current_speed': round(random.uniform(3.2, 4.8), 1)
+    }
     return jsonify(data)
 
 
