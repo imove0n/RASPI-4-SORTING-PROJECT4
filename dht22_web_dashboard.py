@@ -89,16 +89,35 @@ def index():
 def get_data():
     """API endpoint for sensor data"""
     data = read_sensor()
-    # Add mock sorting data for thesis demo
+
+    # Add container data for thesis demo
     import random
-    data['sorting'] = {
-        'unripe': random.randint(45, 55),
-        'ripe': random.randint(80, 95),
-        'overripe': random.randint(15, 25),
-        'defect': random.randint(5, 12),
-        'total_sorted': random.randint(150, 180),
-        'current_speed': round(random.uniform(3.2, 4.8), 1)
+
+    # Container 1: UNRIPE (has real DHT22 sensor)
+    data['container_unripe'] = {
+        'temperature': data['temperature'],  # Real sensor
+        'humidity': data['humidity'],  # Real sensor
+        'count': random.randint(45, 55),  # Simulated count for now
+        'status': 'active'
     }
+
+    # Container 2: RIPE (static/simulated - no sensor yet)
+    data['container_ripe'] = {
+        'temperature': 22.5,  # Static temp for now
+        'humidity': 65.0,  # Static humidity for now
+        'count': random.randint(80, 95),  # Simulated count for now
+        'status': 'simulated'  # Mark as not real sensor
+    }
+
+    # Container 3: ROTTEN (for display)
+    data['container_rotten'] = {
+        'count': random.randint(5, 12)
+    }
+
+    # Overall stats
+    data['total_sorted'] = data['container_unripe']['count'] + data['container_ripe']['count'] + data['container_rotten']['count']
+    data['current_speed'] = round(random.uniform(3.2, 4.8), 1)
+
     return jsonify(data)
 
 

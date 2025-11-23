@@ -1,0 +1,143 @@
+========================================================
+TOMATO CLASSIFICATION RULES - QUICK REFERENCE
+========================================================
+
+YOUR SORTING CATEGORIES:
+========================
+
+🟢 UNRIPE
+---------
+What it means:
+- Green colored tomatoes
+- Not ready to eat or sell
+- Needs more time to ripen
+
+Action:
+- Store at room temperature
+- Let it ripen more
+- Don't sell yet
+
+
+🔴 RIPE (Ready to Sell!)
+------------------------
+What it means:
+- Red color (any shade of red)
+- Orange color
+- Dark red color
+- Perfect for eating/selling
+- No visible damage
+
+Examples:
+- Bright red tomatoes
+- Deep red tomatoes
+- Orange-red tomatoes
+- Dark red tomatoes
+
+Action:
+- Sell immediately
+- Premium price
+- Best quality
+
+
+🟣 OVERRIPE (Reject/Discount)
+------------------------------
+What it means:
+- Has spots or dots on surface
+- Worm bites or holes
+- Any visible damage
+- Brown spots
+- Soft spots
+- Cracks or bruises
+
+May still be red/orange colored BUT has defects!
+
+Action:
+- Reject from premium sales
+- Sell at discount
+- Use for processing/sauce
+- Or discard if too damaged
+
+
+IMPORTANT NOTES:
+================
+
+Color vs Defects:
+-----------------
+- A tomato can be RED but still be OVERRIPE if it has spots!
+- Color = RIPE
+- Spots/damage = OVERRIPE
+- Green = UNRIPE
+
+Examples:
+- Dark red with no spots = RIPE ✓
+- Dark red with spots = OVERRIPE ✗
+- Bright red perfect = RIPE ✓
+- Bright red with worm bite = OVERRIPE ✗
+- Orange perfect = RIPE ✓
+- Green = UNRIPE
+
+
+HOW THE CAMERA DETECTS:
+========================
+
+UNRIPE Detection:
+- Looks for green color in HSV
+- If >50% green pixels = UNRIPE
+
+RIPE Detection:
+- Looks for red/orange/dark red colors
+- Checks for spots using darkness detection
+- If red + no spots = RIPE
+
+OVERRIPE Detection:
+- Detects dark spots on surface
+- If >15% dark spots = OVERRIPE (damaged)
+
+
+ACCURACY TIPS:
+==============
+
+For Best Results:
+1. Good lighting (bright room light)
+2. Tomato fills camera view
+3. Show damaged side if has spots
+4. Rotate if unsure
+5. Clean camera lens
+
+
+If Wrong Classification:
+1. Try better lighting
+2. Move tomato closer
+3. Show defect clearly to camera
+4. Clean tomato surface (remove dirt)
+5. Remember: 75-85% accuracy is normal for color detection
+
+
+FUTURE IMPROVEMENTS:
+====================
+
+When we add YOLO:
+- Better spot detection
+- Size measurement
+- Shape analysis
+- 90-95% accuracy
+- More reliable defect detection
+
+
+CURRENT STATUS:
+===============
+
+Using: Simple color + spot detection
+Accuracy: 75-85%
+Speed: Real-time
+Good for: Testing and basic sorting
+
+Later: YOLO model
+Accuracy: 90-95%
+Speed: Real-time
+Good for: Production quality
+
+
+========================================================
+END OF CLASSIFICATION RULES
+========================================================

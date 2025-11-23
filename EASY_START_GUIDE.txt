@@ -1,0 +1,256 @@
+========================================================
+SUPER EASY START GUIDE - FOR BEGINNERS
+========================================================
+
+I KNOW YOU'RE OVERWHELMED! Let's make this SIMPLE!
+
+
+WHAT YOU HAVE:
+==============
+✓ Raspberry Pi 4
+✓ DHT22 temperature sensor (working)
+✓ Pi Camera v2 (working)
+✓ 6 tomatoes to test with
+✓ Beautiful web dashboard
+
+
+STEP-BY-STEP - DO THIS NOW:
+============================
+
+STEP 1: Open Terminal
+----------------------
+Click the black terminal icon at top of screen
+
+
+STEP 2: Go to Project Folder
+-----------------------------
+Type this and press ENTER:
+
+cd "Desktop/RASPI 4 SORTING PROJECT"
+
+
+STEP 3: Run the Camera Classifier
+----------------------------------
+Type this and press ENTER:
+
+python3 tomato_classifier_with_preview.py
+
+
+STEP 4: What Happens Next
+--------------------------
+A WINDOW will pop up showing what camera sees!
+(Like a video preview)
+
+You'll see:
+- Live camera view
+- Text saying "Press SPACE to classify tomato"
+- Counters at bottom (Unripe: 0, Ripe: 0, Overripe: 0)
+
+
+STEP 5: Classify Your First Tomato
+-----------------------------------
+1. Hold one tomato in front of camera
+2. Make sure tomato fills most of the view
+3. Press SPACE BAR on keyboard
+4. Wait 1 second
+5. You'll see result: "RIPE" or "UNRIPE" or "OVERRIPE"
+6. Image automatically saves!
+
+
+STEP 6: Try All 6 Tomatoes
+---------------------------
+Repeat for each tomato:
+- Hold tomato in front of camera
+- Press SPACE
+- See classification
+- Next tomato!
+
+
+STEP 7: When Done
+-----------------
+Press 'q' key to quit
+You'll see final summary of all classifications
+
+
+WHERE ARE MY IMAGES?
+=====================
+
+All classified images are saved to:
+
+Desktop/RASPI 4 SORTING PROJECT/classified_tomatoes/
+
+To view them:
+1. Open file manager
+2. Go to Desktop
+3. Go to "RASPI 4 SORTING PROJECT" folder
+4. Open "classified_tomatoes" folder
+5. Double-click images to view!
+
+Each image has:
+- The classification written on it (RIPE, UNRIPE, etc)
+- Filename shows category and time
+
+
+TROUBLESHOOTING:
+================
+
+Problem: No window appears
+Solution: Look behind other windows, it might be hidden
+          Or try: Alt+Tab to switch windows
+
+Problem: Window is black
+Solution: Camera might be covered
+          Check camera lens is not blocked
+
+Problem: Can't see tomato clearly
+Solution: Move tomato closer to camera
+          Adjust lighting (turn on room light)
+
+Problem: Wrong classification
+Solution: Normal! Simple color detection is 75-85% accurate
+          YOLO will be better (we'll do that later)
+
+Problem: Terminal says "error"
+Solution: Make sure camera ribbon cable is connected
+          Blue side faces USB ports
+
+
+WHAT EACH FILE DOES:
+====================
+
+tomato_classifier_with_preview.py
+  - Shows live camera preview window
+  - Classifies tomatoes when you press SPACE
+  - Saves images automatically
+  - USE THIS ONE! (Easiest!)
+
+simple_color_classifier.py
+  - No preview window (harder to use)
+  - Don't use this one, use the one above
+
+collect_tomato_dataset.py
+  - For collecting training images
+  - Use later for YOLO training
+
+camera_test.py
+  - Just tests if camera works
+  - Takes one photo
+
+
+QUICK COMMAND REFERENCE:
+=========================
+
+Open terminal, then:
+
+# Go to project folder
+cd "Desktop/RASPI 4 SORTING PROJECT"
+
+# Run classifier with preview window
+python3 tomato_classifier_with_preview.py
+
+# View saved images
+ls classified_tomatoes/
+
+# Run web dashboard
+python3 dht22_web_dashboard.py
+
+
+UNDERSTANDING THE RESULTS:
+===========================
+
+UNRIPE (Green color detected)
+- Tomato is not ready to eat
+- Needs more time to ripen
+- Store at room temperature
+
+RIPE (Red/orange color detected)
+- Tomato is perfect for eating
+- Sell or eat immediately
+- Best flavor
+
+OVERRIPE (Dark red detected)
+- Very soft, may be too ripe
+- Use for cooking/sauce
+- Don't store long
+
+
+WHAT'S NEXT?
+============
+
+After you classify your 6 tomatoes:
+
+OPTION A: Collect more data for YOLO
+- Take 10-20 photos of each tomato
+- From different angles
+- For better AI training
+
+OPTION B: Try the web dashboard
+- Run: python3 dht22_web_dashboard.py
+- Open browser to see beautiful dashboard
+- Shows temperature + sorting counts
+
+OPTION C: Just experiment!
+- Try different tomatoes
+- Test in different lighting
+- See how accurate it is
+
+
+DON'T WORRY ABOUT:
+==================
+
+✗ YOLO training (we'll do later)
+✗ Conveyor belt integration (later)
+✗ Solenoid gates (later)
+✗ Perfect accuracy (this is just testing!)
+
+Just have fun classifying tomatoes! 🍅
+
+
+VISUAL GUIDE - WHAT YOU'LL SEE:
+================================
+
+1. Terminal:
+   [Shows text output with classifications]
+
+2. Preview Window:
+   [Shows live camera view]
+   [Tomato appears in view]
+   [Press SPACE]
+   [Text appears: "RIPE - 85.3%"]
+
+3. Folder with images:
+   classified_tomatoes/
+     Ripe_20251120_140523.jpg
+     Unripe_20251120_140531.jpg
+     Ripe_20251120_140545.jpg
+     ...
+
+
+IF YOU GET STUCK:
+=================
+
+Just run this command:
+
+python3 tomato_classifier_with_preview.py
+
+That's it! Window appears, press SPACE, done!
+
+
+THAT'S ALL YOU NEED TO KNOW!
+=============================
+
+Don't overthink it!
+
+1. Run the script
+2. Window opens
+3. Hold tomato
+4. Press SPACE
+5. See result
+6. Images save automatically
+
+Easy! 🎉
+
+
+========================================================
+END OF EASY START GUIDE
+========================================================

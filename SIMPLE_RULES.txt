@@ -1,0 +1,64 @@
+====================================
+TOMATO SORTING - SIMPLE RULES
+====================================
+
+3 CATEGORIES ONLY:
+==================
+
+RIPE (Sell It!)
+---------------
+Colors:
+- Red
+- Dark red
+- Orange
+- Yellow-orange
+
+Condition:
+- Clean surface
+- No spots
+- No bites
+- Looks good!
+
+Action: SELL!
+
+
+UNRIPE (Wait!)
+--------------
+Colors:
+- Green
+- Light green
+
+Condition:
+- Doesn't matter if clean or not
+- Just needs to ripen more
+
+Action: Store until ripe
+
+
+ROTTEN (Reject!)
+----------------
+What to look for:
+- Dots dots dots
+- Black spots (big black spots)
+- Worm bites
+- Doesn't look like good tomato
+- Any damage
+
+Color doesn't matter!
+- Can be red but has spots = ROTTEN
+- Can be green with bites = ROTTEN
+
+Action: REJECT or discount
+
+
+SIMPLE!
+=======
+
+Good red tomato = RIPE
+Green tomato = UNRIPE
+Tomato with spots/bites = ROTTEN
+
+That's it!
+
+
+====================================
