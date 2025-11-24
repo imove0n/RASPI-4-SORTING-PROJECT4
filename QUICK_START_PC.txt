@@ -1,0 +1,158 @@
+===============================================================================
+RASPBERRY PI REINSTALL - QUICK START FOR YOUR PC
+===============================================================================
+
+STEP 1: Download Raspberry Pi Imager
+-------------------------------------
+Windows: https://www.raspberrypi.com/software/
+Mac: https://www.raspberrypi.com/software/
+Linux: sudo apt install rpi-imager
+
+
+STEP 2: Flash the SD Card
+--------------------------
+1. Insert SD card into USB reader
+2. Open Raspberry Pi Imager
+3. Choose Device: Raspberry Pi 4
+4. Choose OS: Raspberry Pi OS (other) → Raspberry Pi OS (Legacy, 64-bit) Bullseye
+   ⚠️ MUST SAY "BULLSEYE" - NOT "BOOKWORM"!
+5. Choose Storage: Your SD card
+6. Click Next → Edit Settings
+
+Settings to Configure:
+- Username: bacadasa
+- Password: (your password)
+- WiFi SSID: (your network)
+- WiFi Password: (your password)
+- Country: PH
+- Enable SSH: Yes
+- Timezone: Asia/Manila
+
+7. Click Save → Yes → Yes
+8. Wait 10-15 minutes
+9. Eject SD card when done
+
+
+STEP 3: Boot Raspberry Pi
+--------------------------
+1. Insert SD card into Pi
+2. Connect HDMI, keyboard, mouse, power
+3. Wait 2 minutes for boot
+4. Login with username: bacadasa
+
+
+STEP 4: First Commands (In Pi Terminal)
+----------------------------------------
+# Check Python version (MUST BE 3.9.x)
+python3 --version
+
+# Configure Git
+git config --global user.name "laurence de guzman"
+git config --global user.email "laurence.deguzman@tup.edu.ph"
+
+# Generate SSH key for GitHub
+ssh-keygen -t ed25519 -C "laurence.deguzman@tup.edu.ph"
+(Press Enter 3 times)
+
+# Show SSH key
+cat ~/.ssh/id_ed25519.pub
+(Copy this entire line)
+
+
+STEP 5: Add SSH Key to GitHub (On Your PC)
+-------------------------------------------
+1. Go to: https://github.com/settings/keys
+2. Click "New SSH key"
+3. Title: Raspberry Pi 4 Bullseye
+4. Paste the key from Step 4
+5. Click "Add SSH key"
+
+
+STEP 6: Clone Your Project (In Pi Terminal)
+--------------------------------------------
+cd ~/Desktop
+git clone git@github.com:imove0n/RASPI-4-SORTING-PROJECT4.git "RASPI 4 SORTING PROJECT"
+cd "RASPI 4 SORTING PROJECT"
+
+
+STEP 7: Install Everything (In Pi Terminal)
+--------------------------------------------
+# System packages
+sudo apt update
+sudo apt install -y python3-pip python3-opencv python3-picamera2
+
+# PyTorch (THIS WILL WORK NOW!)
+pip3 install torch torchvision --break-system-packages
+
+# Ultralytics YOLO
+pip3 install ultralytics --break-system-packages
+
+
+STEP 8: Test YOLO Detector
+---------------------------
+cd ~/Desktop/"RASPI 4 SORTING PROJECT"
+python3 yolo_tomato_detector.py
+
+(Press 'q' to quit)
+
+
+===============================================================================
+WHAT CHANGED?
+===============================================================================
+
+OLD (Bookworm):        NEW (Bullseye):
+- Python 3.11          → Python 3.9
+- No PyTorch           → PyTorch works!
+- 8-10 hour build      → 5-10 minute install
+- Compatibility hell   → Everything works
+
+
+===============================================================================
+YOUR FILES ARE SAFE!
+===============================================================================
+
+Everything is backed up on GitHub:
+- best.pt (your YOLO model)
+- All Python scripts
+- All configuration
+
+Just clone and you're back!
+
+
+===============================================================================
+AFTER REINSTALL, TELL CLAUDE:
+===============================================================================
+
+"I reinstalled Pi OS Bullseye, cloned the project, now help me set up YOLO"
+
+
+===============================================================================
+TROUBLESHOOTING
+===============================================================================
+
+Q: Python shows 3.11 after reinstall?
+A: You flashed wrong OS. Must be "Bullseye (Legacy)" not "Bookworm"
+
+Q: PyTorch install fails?
+A: Check python3 --version. Must be 3.9.x
+
+Q: Can't find best.pt?
+A: Check: ls -la ~/Desktop/"RASPI 4 SORTING PROJECT"/best.pt
+
+Q: Camera not working?
+A: sudo raspi-config → Interface Options → Camera → Enable → Reboot
+
+
+===============================================================================
+TIME ESTIMATE
+===============================================================================
+
+Flashing SD card:     10-15 minutes
+First boot setup:     5 minutes
+Installing packages:  15-20 minutes
+Testing YOLO:        2 minutes
+
+TOTAL: ~30-40 minutes and you're fully operational!
+
+
+===============================================================================
