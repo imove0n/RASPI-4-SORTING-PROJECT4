@@ -1,0 +1,55 @@
+========================================================
+LABEL YOUR 40 IMAGES - SUPER SIMPLE!
+========================================================
+
+✅ YES! All I need is your labeled data!
+
+
+WHAT TO DO:
+===========
+
+1. Go to: https://colab.research.google.com
+
+2. Upload this file: Label_Studio_Colab.ipynb
+   (File → Upload notebook)
+
+3. Run 4 cells (just click ▶ on each)
+
+4. Label your 40 tomatoes
+
+5. Download: tomato_labels.zip
+
+6. Tell me: "Labels ready!"
+
+
+THAT'S IT! 🎯
+
+
+THE NOTEBOOK DOES:
+===================
+✓ Installs Label Studio for you
+✓ Lets you upload images
+✓ Opens Label Studio interface (easy to use!)
+✓ Exports labels in YOLO format
+✓ Everything in one place!
+
+
+TIME: 25-30 minutes total
+
+
+AFTER LABELING:
+===============
+→ I give you training notebook
+→ You train YOLO
+→ Download model
+→ Use on Pi
+→ Only detects tomatoes! ✓
+
+
+GO NOW:
+=======
+https://colab.research.google.com
+Upload: Label_Studio_Colab.ipynb
+
+
+========================================================

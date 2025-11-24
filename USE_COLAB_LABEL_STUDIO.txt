@@ -1,0 +1,227 @@
+========================================================
+LABEL YOUR 40 IMAGES WITH GOOGLE COLAB
+========================================================
+
+YOU SAID: "Label Studio was easy, let's use that"
+I MADE: Google Colab notebook with Label Studio built-in!
+
+
+WHY THIS IS BETTER THAN ROBOFLOW:
+==================================
+✓ More stable (won't lose work like Roboflow did!)
+✓ Saves progress automatically
+✓ Label Studio interface (you already know it!)
+✓ No local installation needed
+✓ Exports YOLO format directly
+
+
+SUPER SIMPLE 3-STEP PROCESS:
+=============================
+
+STEP 1: Upload Notebook to Google Colab
+----------------------------------------
+1. Go to: https://colab.research.google.com
+2. Sign in with Google account
+3. Click: File → Upload notebook
+4. Select: Label_Studio_Colab.ipynb
+   (It's in your project folder!)
+5. Notebook opens ✓
+
+
+STEP 2: Run the 4 Cells
+------------------------
+
+CELL 1: Install (2 mins)
+  Click ▶ play button → Wait for installation
+
+CELL 2: Upload Images (2 mins)
+  Click ▶ → Choose your 40 images → Upload
+
+CELL 3: Start Label Studio (instant)
+  Click ▶ → Click the ngrok link that appears
+  Label Studio opens in new tab!
+
+  NOW LABEL YOUR TOMATOES:
+  - Draw boxes around tomatoes
+  - Select "ripe" or "unripe"
+  - Do all 40 images
+  - Takes 20-30 minutes
+
+CELL 4: Export Labels (1 min)
+  Stop Cell 3 (click ⏹)
+  Run Cell 4 → Downloads tomato_labels.zip
+
+
+STEP 3: Tell Me You're Done!
+-----------------------------
+Say: "Labels ready!"
+I'll give you training notebook next!
+
+
+THAT'S IT! 3 STEPS!
+===================
+
+
+DETAILED WALKTHROUGH:
+=====================
+
+1. Open Google Colab
+   https://colab.research.google.com
+
+2. Upload the notebook
+   File → Upload notebook
+   Choose: Label_Studio_Colab.ipynb
+
+3. Run Cell 1
+   Click the ▶ button on first cell
+   Wait ~2 minutes
+   You'll see: "✅ Label Studio installed successfully!"
+
+4. Run Cell 2
+   Click ▶ on second cell
+   Click "Choose Files" button that appears
+   Select all 40 tomato images
+   Click Open
+   Wait for upload
+   You'll see: "✅ Uploaded 40 images successfully!"
+
+5. Run Cell 3
+   Click ▶ on third cell
+   Wait ~30 seconds
+   You'll see a link like: https://xxxx.ngrok.io
+   CLICK THAT LINK!
+
+   Label Studio opens in new tab!
+
+6. Label Your Images
+   For each image:
+   - Draw box around tomato (click and drag)
+   - Select "ripe" (red) or "unripe" (green)
+   - Click Submit
+   - Next image
+
+   Repeat for all 40 images!
+   Takes 20-30 minutes
+
+7. Export Labels
+   Go back to Colab tab
+   Click ⏹ stop button on Cell 3
+   Run Cell 4 (click ▶)
+   File downloads: tomato_labels.zip
+
+   SAVE THIS FILE! You need it for training!
+
+8. Done!
+   Tell me: "Labels ready!"
+
+
+LABELING TIPS:
+==============
+
+Good Box:
+┌──────────┐
+│   🍅     │  ← Tight around tomato
+└──────────┘
+
+Label:
+- Red/Orange tomato → Click "ripe"
+- Green tomato → Click "unripe"
+
+Multiple tomatoes in one image?
+- Draw multiple boxes!
+- Label each one
+
+Keyboard shortcuts:
+- Ctrl+Enter = Submit and next
+
+
+WHAT YOU'LL GET:
+================
+
+After Cell 4, you download: tomato_labels.zip
+
+This contains:
+- All your images
+- Label files (YOLO format)
+- classes.txt
+- Ready for training!
+
+
+TROUBLESHOOTING:
+================
+
+Issue: Colab asks for phone verification
+Fix: Use your phone number, it's safe
+
+Issue: Upload fails
+Fix: Upload in batches (20 images at a time)
+
+Issue: ngrok link doesn't work
+Fix: Run Cell 3 again
+
+Issue: Lost progress
+Fix: Label Studio auto-saves! Just refresh
+
+
+TIME ESTIMATE:
+==============
+
+Step 1: Upload notebook       1 minute
+Step 2: Run cells 1-2         4 minutes
+Step 3: Start Label Studio    1 minute
+Step 4: Label 40 images       20-30 minutes
+Step 5: Export                1 minute
+
+TOTAL: 25-35 minutes
+
+
+NEXT STEPS:
+===========
+
+After you download tomato_labels.zip:
+
+1. Save it somewhere safe
+2. Tell me "Labels ready!"
+3. I'll give you YOLO training notebook
+4. You train the model
+5. Deploy to Raspberry Pi!
+
+
+FILE LOCATION:
+==============
+
+The notebook is here:
+c:\Users\IT-Laurence\Desktop\RASPI-4-SORTING-PROJECT4\Label_Studio_Colab.ipynb
+
+Just upload it to Google Colab!
+
+
+ADVANTAGES OVER ROBOFLOW:
+==========================
+
+Roboflow (what lost your work):
+- Browser-based (can crash)
+- Lost 1 hour of your work ❌
+
+Colab + Label Studio:
+- More stable
+- Auto-saves progress
+- Can pause and resume
+- Won't lose work ✓
+
+
+READY?
+======
+
+1. Go to: https://colab.research.google.com
+2. Upload: Label_Studio_Colab.ipynb
+3. Run the cells!
+4. Label your tomatoes!
+
+
+========================================================
+START HERE: https://colab.research.google.com
+FILE: Label_Studio_Colab.ipynb
+TIME: 25-35 minutes
+RESULT: tomato_labels.zip ready for training!
+========================================================
