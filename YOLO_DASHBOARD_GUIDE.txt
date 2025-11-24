@@ -8,6 +8,7 @@ YOLO + DASHBOARD INTEGRATION - QUICK START GUIDE
 2. DHT22 temperature/humidity sensor
 3. Real-time web dashboard with gauges
 4. Live tomato counting
+5. Live camera feed with detection boxes (NEW!)
 
 
 📦 FILES YOU NEED ON RASPBERRY PI:
@@ -28,7 +29,7 @@ ls best.pt yolo_dashboard_integrated.py
 
 STEP 2: Install dependencies (if not already installed)
 --------------------------------------------------------
-pip3 install ultralytics flask flask-cors adafruit-circuitpython-dht
+pip3 install ultralytics flask flask-cors adafruit-circuitpython-dht opencv-python
 
 
 STEP 3: Run the integrated server!
@@ -51,7 +52,9 @@ Background Thread (YOLO Detection):
 - Continuously captures camera frames (5 FPS)
 - Runs YOLO detection on each frame
 - Counts visible ripe/unripe tomatoes
-- Updates counts in real-time
+- Draws bounding boxes on frame (green=unripe, red=ripe)
+- Shows confidence score for each detection
+- Updates counts + camera feed in real-time
 
 
 Main Thread (Flask Server):
@@ -63,17 +66,20 @@ Main Thread (Flask Server):
 
 Dashboard Display:
 ------------------
-┌─────────────────────────────┐
-│  UNRIPE TOMATOES           │
-│  🎥 YOLO DETECTION         │
-├─────────────────────────────┤
-│  Temp: 18.5°C  Humid: 60%  │
-│     [gauges animate]        │
-├─────────────────────────────┤
-│    Tomato Count             │
-│         2          ← LIVE!  │
-│        pcs                  │
-└─────────────────────────────┘
+┌─────────────────────────────────────┐
+│  🎥 LIVE CAMERA FEED               │
+│  [Camera shows tomatoes with boxes]│
+│  Green boxes = Unripe              │
+│  Red boxes = Ripe                  │
+├─────────────────────────────────────┤
+│  UNRIPE TOMATOES                   │
+│  Temp: 18.5°C  Humid: 60%         │
+│  Count: 2 pcs          ← LIVE!    │
+├─────────────────────────────────────┤
+│  RIPE TOMATOES                     │
+│  Temp: 22.5°C  Humid: 65%         │
+│  Count: 1 pcs          ← LIVE!    │
+└─────────────────────────────────────┘
 
 
 📊 WHAT THE COUNTS MEAN:
@@ -109,30 +115,37 @@ On Raspberry Pi 4:
 🧪 TESTING:
 ===========
 
-Test 1: Check YOLO Detection
------------------------------
+Test 1: Check Camera Feed
+--------------------------
 1. Run: python3 yolo_dashboard_integrated.py
-2. Look for: "✅ YOLO detection running in background"
-3. Open dashboard
-4. Hold tomato in front of camera
-5. Watch count update on dashboard!
+2. Open dashboard: http://localhost:5000
+3. You should see LIVE camera feed at the top
+4. Camera shows what YOLO is detecting
+5. Green boxes = unripe, Red boxes = ripe
+
+Test 2: Check YOLO Detection
+-----------------------------
+1. Hold tomato in front of camera
+2. Watch green/red box appear on camera feed
+3. Watch count update below
+4. See detection label with confidence score
 
 
-Test 2: Check Temperature Sensor
+Test 3: Check Temperature Sensor
 ---------------------------------
 1. Dashboard shows real temp/humidity
 2. Gauges animate with values
 3. Values update every 2 seconds
 
 
-Test 3: Multiple Tomatoes
+Test 4: Multiple Tomatoes
 --------------------------
 1. Hold 2 unripe tomatoes → Count = 2
 2. Hold 3 ripe tomatoes → Count = 3
 3. Hold 1 ripe + 2 unripe → Ripe=1, Unripe=2
 
 
-Test 4: No Tomatoes
+Test 5: No Tomatoes
 -------------------
 1. Remove all tomatoes from camera
 2. Both counts should drop to 0
@@ -180,25 +193,37 @@ For Your Presentation:
    → python3 yolo_dashboard_integrated.py
 
 2. "The dashboard shows real-time monitoring"
-   → Open browser to show gauges
+   → Open browser to show dashboard
 
-3. "Temperature and humidity are from DHT22 sensor"
+3. "Here's the live camera feed"
+   → Point to camera feed at top
+
+4. "Temperature and humidity are from DHT22 sensor"
    → Point to animated gauges
 
-4. "Now I'll demonstrate YOLO detection"
+5. "Now I'll demonstrate YOLO detection"
    → Hold tomato in front of camera
 
-5. "See how it counts unripe tomatoes"
-   → Count increases to 1
+6. "See the green box? That's an unripe tomato"
+   → Point to green bounding box on camera
 
-6. "Now with multiple tomatoes"
-   → Hold 2-3 tomatoes, count updates
+7. "The confidence score shows detection accuracy"
+   → Point to label (e.g., "unripe 0.85")
 
-7. "And it distinguishes ripe from unripe"
-   → Hold ripe tomato, ripe count increases
+8. "And the count updates automatically"
+   → Point to count below (increases to 1)
 
-8. "This will later integrate with the conveyor"
-   → Explain future sorting mechanism
+9. "Now with multiple tomatoes"
+   → Hold 2-3 tomatoes, watch multiple boxes appear
+
+10. "And it distinguishes ripe from unripe"
+    → Hold ripe tomato, red box appears
+
+11. "Everything happens in real-time on one dashboard"
+    → Show camera feed + counts + sensors all together
+
+12. "This will later integrate with the conveyor"
+    → Explain future sorting mechanism
 
 
 📝 NEXT STEPS:
@@ -207,9 +232,11 @@ For Your Presentation:
 Current Setup:
 --------------
 ✅ YOLO detection working
+✅ Live camera feed with detection boxes
 ✅ Live count updates
 ✅ Temperature monitoring
 ✅ Professional dashboard
+✅ Everything in ONE page (no alt-tabbing!)
 
 Future Enhancements:
 --------------------
@@ -233,6 +260,15 @@ A: Normal on Pi! 5 FPS is expected
 
 Q: Temperature shows cached values warning
 A: Normal DHT22 behavior, values still accurate
+
+Q: Camera feed not showing
+A: Wait 5 seconds for initialization, refresh browser
+
+Q: Camera feed shows blank/black screen
+A: Check camera connection and permissions
+
+Q: Detection boxes not appearing
+A: Check model is loaded, try better lighting, adjust confidence threshold
 
 
 ========================================================

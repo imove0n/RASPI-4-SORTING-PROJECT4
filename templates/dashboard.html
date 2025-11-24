@@ -87,6 +87,83 @@
             50% { opacity: 0.7; transform: scale(1.1); }
         }
 
+        .camera-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .camera-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .camera-header h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .camera-badge {
+            padding: 8px 16px;
+            background: rgba(74, 222, 128, 0.2);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 50px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #4ade80;
+        }
+
+        .cameras-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .camera-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .camera-label {
+            text-align: center;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .camera-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
         .containers-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -331,6 +408,20 @@
                 font-size: 2em;
             }
 
+            .cameras-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .camera-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .camera-header h2 {
+                font-size: 1.2em;
+            }
+
             .count-value {
                 font-size: 4em;
             }
@@ -349,6 +440,28 @@
                 <span class="status-dot"></span>
                 Real-Time Monitoring Dashboard
             </p>
+        </div>
+
+        <!-- Live Camera Feeds -->
+        <div class="camera-section">
+            <div class="camera-header">
+                <h2>🎥 LIVE CAMERA FEEDS</h2>
+                <span class="camera-badge">YOLO Detection Active</span>
+            </div>
+            <div class="cameras-grid">
+                <div class="camera-box">
+                    <div class="camera-label">Camera 1</div>
+                    <div class="camera-container">
+                        <img id="camera-feed-1" src="/video_feed" alt="Camera 1 Feed">
+                    </div>
+                </div>
+                <div class="camera-box">
+                    <div class="camera-label">Camera 2</div>
+                    <div class="camera-container">
+                        <img id="camera-feed-2" src="/video_feed" alt="Camera 2 Feed">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="containers-grid">

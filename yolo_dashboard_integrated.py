@@ -4,7 +4,7 @@ YOLO + DHT22 Integrated Dashboard Server
 Combines camera detection with temperature/humidity monitoring
 """
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, Response
 from flask_cors import CORS
 import board
 import adafruit_dht
@@ -13,6 +13,7 @@ import threading
 from ultralytics import YOLO
 from picamera2 import Picamera2
 import numpy as np
+import cv2
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -54,6 +55,10 @@ detection_counts = {
 }
 detection_lock = threading.Lock()
 
+# Latest frame with detection boxes (for camera feed)
+latest_frame = None
+frame_lock = threading.Lock()
+
 
 def read_sensor():
     """Read DHT22 sensor data with error handling"""
@@ -93,7 +98,7 @@ def read_sensor():
 
 def yolo_detection_loop():
     """Background thread that continuously runs YOLO detection"""
-    global detection_counts
+    global detection_counts, latest_frame
 
     print("Starting YOLO detection thread...")
     class_names = model.names  # Get class names from model
@@ -110,6 +115,9 @@ def yolo_detection_loop():
             unripe_count = 0
             ripe_count = 0
 
+            # Draw detection boxes on frame
+            annotated_frame = frame.copy()
+
             for result in results:
                 boxes = result.boxes
                 for box in boxes:
@@ -121,14 +129,35 @@ def yolo_detection_loop():
                     if confidence > 0.5:
                         if class_name == 'unripe':
                             unripe_count += 1
+                            color = (74, 222, 128)  # Green for unripe
                         elif class_name == 'ripe':
                             ripe_count += 1
+                            color = (255, 107, 107)  # Red for ripe
+                        else:
+                            continue
+
+                        # Get box coordinates
+                        x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+                        x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+
+                        # Draw bounding box
+                        cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), color, 2)
+
+                        # Draw label with confidence
+                        label = f"{class_name} {confidence:.2f}"
+                        (label_w, label_h), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
+                        cv2.rectangle(annotated_frame, (x1, y1 - label_h - 10), (x1 + label_w, y1), color, -1)
+                        cv2.putText(annotated_frame, label, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2)
 
             # Update global counts (thread-safe)
             with detection_lock:
                 detection_counts['unripe'] = unripe_count
                 detection_counts['ripe'] = ripe_count
                 detection_counts['last_update'] = time.time()
+
+            # Update latest frame (thread-safe)
+            with frame_lock:
+                latest_frame = annotated_frame
 
             # Small delay to prevent CPU overload (5 FPS)
             time.sleep(0.2)
@@ -207,6 +236,43 @@ def get_status():
         'failed_reads': failed_reads,
         'success_rate': round(100 * successful_reads / (successful_reads + failed_reads), 1) if (successful_reads + failed_reads) > 0 else 0
     })
+
+
+def generate_frames():
+    """Generator function for video streaming"""
+    global latest_frame
+
+    while True:
+        with frame_lock:
+            if latest_frame is None:
+                # Wait for first frame
+                time.sleep(0.1)
+                continue
+
+            frame = latest_frame.copy()
+
+        # Convert RGB to BGR for OpenCV
+        frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+
+        # Encode frame to JPEG
+        ret, buffer = cv2.imencode('.jpg', frame_bgr)
+        if not ret:
+            continue
+
+        frame_bytes = buffer.tobytes()
+
+        # Yield frame in multipart format
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+
+        time.sleep(0.1)  # Limit to 10 FPS for streaming
+
+
+@app.route('/video_feed')
+def video_feed():
+    """Video streaming route"""
+    return Response(generate_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
