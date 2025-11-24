@@ -1,0 +1,315 @@
+========================================================
+STEP 2: LABELING TOMATOES WITH LABEL STUDIO (GOOGLE COLAB)
+========================================================
+
+GOAL: Draw boxes around tomatoes and label them
+
+TIME NEEDED: 30-60 minutes (for 60-100 photos)
+WHAT YOU NEED: Google account, your photos ready
+
+
+OVERVIEW:
+=========
+
+You will:
+1. Open Google Colab notebook (I'll provide link)
+2. Upload your photos
+3. Label Studio will start in Colab
+4. Draw boxes around tomatoes
+5. Label each tomato: ripe_tomato, unripe_tomato, or rotten_tomato
+6. Export annotations
+7. Move to training!
+
+
+PREPARATION:
+============
+
+Before starting:
+----------------
+□ Upload all your photos to Google Drive
+□ Organize in one folder (e.g., "tomato_photos")
+□ Make sure you have stable internet
+□ Use Chrome or Firefox browser
+
+
+LABELING CATEGORIES:
+====================
+
+You will label tomatoes as ONE of these:
+
+1. ripe_tomato
+   - Red color
+   - Orange color
+   - Dark red color
+   - NO visible damage
+   - Ready to sell
+
+2. unripe_tomato
+   - Green color
+   - Light green
+   - Not ready yet
+   - NO red/orange
+
+3. rotten_tomato
+   - Has black spots
+   - Has worm bites
+   - Has damage/cracks
+   - Has brown spots
+   - Any visible defects
+   - (Can be red but damaged!)
+
+
+HOW TO LABEL IN LABEL STUDIO:
+==============================
+
+For EACH Photo:
+---------------
+
+STEP 1: Look at the image
+- Identify all tomatoes in the photo
+
+STEP 2: Draw bounding box
+- Click and drag to create a box around the tomato
+- Box should tightly fit the tomato
+- Include the whole tomato
+- Don't include too much background
+
+STEP 3: Choose label
+- Select: ripe_tomato, unripe_tomato, or rotten_tomato
+- Based on the tomato's condition
+
+STEP 4: Repeat for all tomatoes in image
+- If photo has 3 tomatoes → draw 3 boxes
+- Each gets its own label
+
+STEP 5: Submit and move to next image
+
+
+BOUNDING BOX TIPS:
+==================
+
+GOOD Box:
+---------
+┌─────────────┐
+│   🍅        │  ← Box tightly around tomato
+│             │  ← Small margin around edges
+└─────────────┘
+
+
+BAD Box (Too Loose):
+--------------------
+┌─────────────────────┐
+│                     │
+│      🍅             │  ← Too much background
+│                     │
+└─────────────────────┘
+
+
+BAD Box (Too Tight):
+--------------------
+┌────────┐
+│  🍅    │  ← Cutting off parts of tomato
+└────────┘
+
+
+PERFECT Box:
+------------
+┌──────────────┐
+│   🍅         │  ← Just right!
+│              │  ← Includes whole tomato
+└──────────────┘  ← Small border around it
+
+
+WHAT TO LABEL:
+==============
+
+✓ DO Label:
+-----------
+- Every tomato in the photo
+- Partial tomatoes (if you can see them)
+- Tomatoes in background
+- Multiple tomatoes = multiple boxes
+
+✗ DON'T Label:
+--------------
+- Background objects (walls, tables, books)
+- Your hand (if visible)
+- Other objects
+- Reflections
+- Shadows
+- ONLY label actual tomatoes!
+
+
+EXAMPLE LABELING SESSION:
+==========================
+
+Image 1: One ripe tomato on table
+----------------------------------
+1. Draw box around tomato
+2. Select label: "ripe_tomato"
+3. Submit → Next image
+
+Image 2: Three tomatoes (2 ripe, 1 unripe)
+-------------------------------------------
+1. Draw box around first ripe tomato
+2. Label: "ripe_tomato"
+3. Draw box around second ripe tomato
+4. Label: "ripe_tomato"
+5. Draw box around unripe tomato
+6. Label: "unripe_tomato"
+7. Submit → Next image
+
+Image 3: One rotten tomato with spots
+--------------------------------------
+1. Draw box around tomato
+2. Select label: "rotten_tomato"
+3. Submit → Next image
+
+Continue for all photos!
+
+
+KEYBOARD SHORTCUTS (Faster!):
+==============================
+
+While labeling:
+- SPACE = Submit current image
+- 1 = Select "ripe_tomato" label
+- 2 = Select "unripe_tomato" label
+- 3 = Select "rotten_tomato" label
+- Arrow keys = Navigate images
+- ESC = Cancel current box
+
+
+SPEED LABELING WORKFLOW:
+=========================
+
+1. Click and drag → draw box
+2. Press "1", "2", or "3" for label
+3. Press SPACE to submit
+4. Repeat for next image
+
+With practice: 30 seconds per image!
+60 images = 30 minutes ✓
+
+
+QUALITY CHECKS:
+===============
+
+Every 10-15 images, check:
+
+□ Boxes are tight around tomatoes
+□ All tomatoes in image are labeled
+□ Correct category selected
+□ No background objects labeled
+□ Boxes don't cut off tomato parts
+
+
+COMMON MISTAKES:
+================
+
+Mistake 1: Box too big
+Fix: Make box tighter around tomato
+
+Mistake 2: Labeling background
+Fix: Only draw boxes on actual tomatoes!
+
+Mistake 3: Wrong category
+Fix: Check color and damage:
+  - Green = unripe
+  - Red + no damage = ripe
+  - Red + damage = rotten
+
+Mistake 4: Missing tomatoes
+Fix: If photo has 3 tomatoes, make 3 boxes!
+
+
+EXPORTING YOUR LABELS:
+======================
+
+After labeling all photos:
+
+1. Click "Export" in Label Studio
+2. Choose format: "YOLO"
+3. Download the export file
+4. You'll get:
+   - labels.zip (contains .txt files)
+   - One .txt file per image
+
+These files tell YOLO where tomatoes are!
+
+
+FILE FORMAT (What YOLO Needs):
+===============================
+
+For each image (IMG_001.jpg):
+You'll get a text file (IMG_001.txt):
+
+Example content:
+0 0.512 0.384 0.234 0.456
+1 0.234 0.678 0.123 0.234
+
+What this means:
+0 = ripe_tomato (class 0)
+1 = unripe_tomato (class 1)
+Numbers = box position (x, y, width, height)
+
+Don't worry about understanding this!
+YOLO will read it automatically!
+
+
+WHAT'S NEXT:
+============
+
+After exporting labels:
+
+1. Download the labels.zip file
+2. Keep your original photos ready
+3. Move to STEP 3: Training with YOLO
+4. Upload photos + labels to training notebook
+
+
+TROUBLESHOOTING:
+================
+
+Issue: Can't draw boxes
+Fix: Click the box tool icon first
+
+Issue: Wrong label selected
+Fix: Click the box, change label dropdown
+
+Issue: Deleted box by accident
+Fix: Press CTRL+Z to undo
+
+Issue: Lost progress
+Fix: Label Studio auto-saves! Just refresh
+
+Issue: Export button missing
+Fix: Make sure you labeled at least 1 image
+
+
+TIME ESTIMATE:
+==============
+
+60 photos × 30 seconds = 30 minutes
+100 photos × 30 seconds = 50 minutes
+
+Take breaks every 20 images!
+Stay focused for accuracy!
+
+
+READY FOR STEP 2?
+==================
+
+Checklist before starting:
+□ Photos uploaded to Google Drive
+□ Google Colab notebook opened (next step)
+□ Stable internet connection
+□ 30-60 minutes available
+□ Understanding of 3 categories
+
+Let's start labeling! 🏷️🍅
+
+
+========================================================
+END OF STEP 2 - LABELING GUIDE
+========================================================

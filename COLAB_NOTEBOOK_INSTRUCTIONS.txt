@@ -1,0 +1,281 @@
+========================================================
+GOOGLE COLAB SETUP - LABEL STUDIO FOR TOMATO LABELING
+========================================================
+
+IMPORTANT: I'll create the actual Colab notebook file for you!
+This document explains how to use it.
+
+
+WHAT YOU'LL GET:
+================
+
+Two Google Colab Notebooks:
+1. Tomato_Labeling_Studio.ipynb (for labeling - STEP 2)
+2. Tomato_YOLO_Training.ipynb (for training - STEP 3)
+
+
+HOW TO USE GOOGLE COLAB:
+=========================
+
+Step 1: Access Colab
+--------------------
+1. Go to: https://colab.research.google.com
+2. Sign in with Google account
+3. You'll see the Colab homepage
+
+
+Step 2: Upload Notebook
+------------------------
+1. Click "File" → "Upload notebook"
+2. Choose the .ipynb file I give you
+3. Notebook opens in new tab
+
+
+Step 3: Run Cells
+------------------
+1. Each "cell" is a block of code
+2. Click the ▶ play button to run each cell
+3. Or use: Shift + Enter
+4. Run cells from top to bottom in order!
+
+
+Step 4: Follow Instructions
+----------------------------
+Each notebook has step-by-step instructions
+Just read and run each cell!
+
+
+NOTEBOOK 1: LABEL STUDIO SETUP
+===============================
+
+What it does:
+-------------
+1. Installs Label Studio in Colab
+2. Creates a labeling project
+3. Lets you upload your photos
+4. Opens Label Studio interface
+5. You draw boxes and label tomatoes
+6. Exports labels in YOLO format
+
+
+How to use:
+-----------
+
+CELL 1: Install Label Studio
+```
+▶ RUN THIS CELL
+Installing label-studio...
+✓ Installation complete!
+```
+
+CELL 2: Mount Google Drive
+```
+▶ RUN THIS CELL
+Click the link → Allow access
+✓ Google Drive connected!
+```
+
+CELL 3: Upload Photos
+```
+▶ RUN THIS CELL
+Select your tomato_photos folder from Drive
+✓ Photos loaded!
+```
+
+CELL 4: Start Label Studio
+```
+▶ RUN THIS CELL
+Label Studio is running at:
+http://localhost:8080
+
+Click the link → Opens Label Studio!
+```
+
+CELL 5: Configure Project
+```
+Already configured for you!
+Categories:
+- ripe_tomato
+- unripe_tomato
+- rotten_tomato
+```
+
+CELL 6: Label Your Images
+```
+Instructions appear in Label Studio interface
+Draw boxes → Select label → Submit
+Repeat for all images!
+```
+
+CELL 7: Export Annotations
+```
+▶ RUN THIS CELL WHEN DONE LABELING
+Exports to: labels.zip
+Downloads automatically!
+```
+
+
+NOTEBOOK 2: YOLO TRAINING
+==========================
+
+What it does:
+-------------
+1. Installs YOLOv8/YOLO11
+2. Uploads your photos + labels
+3. Prepares dataset in correct format
+4. Trains YOLO model
+5. Tests accuracy
+6. Downloads trained model (.pt file)
+
+
+How to use:
+-----------
+
+CELL 1: Install Ultralytics YOLO
+```
+▶ RUN THIS CELL
+Installing YOLOv8...
+✓ Installation complete!
+```
+
+CELL 2: Upload Dataset
+```
+▶ RUN THIS CELL
+Upload your photos folder
+Upload your labels.zip
+✓ Dataset ready!
+```
+
+CELL 3: Prepare YOLO Format
+```
+▶ RUN THIS CELL
+Creating dataset structure...
+✓ Dataset formatted!
+```
+
+CELL 4: Create Configuration File
+```
+▶ RUN THIS CELL
+Creating data.yaml...
+✓ Configuration ready!
+```
+
+CELL 5: Train Model
+```
+▶ RUN THIS CELL
+Training started...
+This takes 1-2 hours!
+
+You'll see:
+Epoch 1/100: loss=0.234
+Epoch 2/100: loss=0.198
+...
+Epoch 100/100: loss=0.045
+✓ Training complete!
+```
+
+CELL 6: Test Model
+```
+▶ RUN THIS CELL
+Testing on validation images...
+Accuracy: 92.5%
+✓ Model tested!
+```
+
+CELL 7: Download Model
+```
+▶ RUN THIS CELL
+Downloading: tomato_detector.pt
+✓ Model downloaded!
+```
+
+
+IMPORTANT TIPS:
+===============
+
+1. Keep Colab Tab Open
+-----------------------
+Don't close the tab while running!
+Colab stops if you close it.
+
+2. Colab Timeout
+----------------
+Free Colab disconnects after 90 minutes of inactivity
+Click something every hour to keep alive!
+
+3. GPU Runtime
+--------------
+For training, use GPU:
+Runtime → Change runtime type → GPU
+Much faster training!
+
+4. Save Your Work
+-----------------
+Download labels.zip and model.pt!
+Colab deletes files after session ends!
+
+5. Session Limits
+-----------------
+Free Colab: 12 hours max per session
+Enough for labeling + training!
+
+
+COLAB NOTEBOOK STRUCTURE:
+==========================
+
+Each notebook has sections:
+
+📌 SETUP (Run once at start)
+📸 UPLOAD DATA
+🏷️ LABELING (Notebook 1) or 🎯 TRAINING (Notebook 2)
+💾 DOWNLOAD RESULTS
+
+
+You just run cells top to bottom!
+Instructions are in each cell!
+
+
+WHAT YOU NEED READY:
+====================
+
+For Notebook 1 (Labeling):
+--------------------------
+□ Google account
+□ Photos uploaded to Google Drive
+□ 30-60 minutes available
+□ Good internet connection
+
+For Notebook 2 (Training):
+---------------------------
+□ Labeled photos (from Notebook 1)
+□ labels.zip (exported from Notebook 1)
+□ 2-3 hours available (for training)
+□ Good internet connection
+
+
+NEXT STEPS:
+===========
+
+1. I'll create the actual .ipynb files for you
+2. You download them
+3. Upload to Google Colab
+4. Follow the instructions in each notebook
+5. Run cells step by step
+6. Get your trained model!
+
+
+========================================================
+READY TO START?
+========================================================
+
+Once you have your photos ready:
+1. I'll give you the Colab notebook files
+2. You upload to Colab
+3. You start labeling!
+
+Let me know when you've finished taking photos! 📸
+
+
+========================================================
+END OF COLAB INSTRUCTIONS
+========================================================

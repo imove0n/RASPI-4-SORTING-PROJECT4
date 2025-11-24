@@ -1,0 +1,184 @@
+========================================================
+STEP 1: PHOTOGRAPHING TOMATOES FOR YOLO TRAINING
+========================================================
+
+GOAL: Take 60-100 photos of tomatoes in different conditions
+
+TIME NEEDED: 20-30 minutes
+EQUIPMENT: Phone camera or any camera
+
+
+WHAT YOU NEED:
+==============
+- 10-15 tomatoes (mix of ripe, unripe, rotten)
+- Good lighting (natural light or room light)
+- Different backgrounds (table, cloth, paper, etc.)
+- Your phone camera
+
+
+PHOTO REQUIREMENTS:
+===================
+
+Quantity:
+---------
+MINIMUM: 60 photos total
+RECOMMENDED: 100+ photos
+
+Categories:
+-----------
+- 30-40 photos of RIPE tomatoes (red, orange, dark red)
+- 30-40 photos of UNRIPE tomatoes (green, light green)
+- 20+ photos of ROTTEN tomatoes (spots, damage, worm bites)
+
+
+HOW TO TAKE PHOTOS:
+===================
+
+For EACH Tomato (10-20 shots per tomato):
+------------------------------------------
+
+1. DIFFERENT ANGLES:
+   - Top view
+   - Side view (left)
+   - Side view (right)
+   - Bottom view
+   - 45-degree angle
+
+2. DIFFERENT DISTANCES:
+   - Close-up (tomato fills frame)
+   - Medium (tomato + some background)
+   - Far (tomato is smaller in frame)
+
+3. DIFFERENT ROTATIONS:
+   - Front
+   - Rotate 90 degrees → photo
+   - Rotate 90 degrees → photo
+   - Rotate 90 degrees → photo
+
+4. DIFFERENT BACKGROUNDS:
+   - On white paper
+   - On dark table
+   - On cloth
+   - On wood surface
+   - On your conveyor belt (if you have it)
+
+5. DIFFERENT LIGHTING:
+   - Natural window light
+   - Room light overhead
+   - Side lighting
+   - Slightly darker (not too dark!)
+
+
+IMPORTANT TIPS:
+===============
+
+✓ DO:
+-----
+- Keep tomato in focus (not blurry)
+- Include some background objects (books, cups, etc.)
+- Take photos with other tomatoes in background
+- Vary the environment
+- Show damaged parts clearly (for rotten category)
+- Make sure tomato is visible and clear
+
+✗ DON'T:
+--------
+- Don't make photos too dark
+- Don't blur the tomato
+- Don't have tomato too small in frame
+- Don't take all photos from same angle
+- Don't use only one background
+
+
+EXAMPLE SESSION (One Ripe Tomato):
+===================================
+
+1. Place tomato on white paper → photo (top view)
+2. Rotate tomato 90° → photo
+3. Rotate tomato 90° → photo
+4. Rotate tomato 90° → photo
+5. Pick up tomato, show from side → photo
+6. Move camera closer → photo (close-up)
+7. Move camera farther → photo
+8. Place tomato on dark table → photo (change background)
+9. Rotate tomato → photo
+10. Tilt camera 45° → photo (different angle)
+11. Place book next to tomato → photo (with distractor)
+12. Add another tomato in background → photo
+13. Change lighting → photo
+14. Show other side → photo
+15. Final rotation → photo
+
+DONE! 15 photos of one tomato ✓
+
+Repeat for all tomatoes!
+
+
+ORGANIZING YOUR PHOTOS:
+========================
+
+Create folders on your computer:
+
+tomato_photos/
+├── all_photos/
+    ├── IMG_001.jpg
+    ├── IMG_002.jpg
+    ├── IMG_003.jpg
+    └── ... (all 60-100 photos here)
+
+DON'T sort them into ripe/unripe/rotten yet!
+We'll label them in Label Studio!
+
+
+QUALITY CHECKLIST:
+==================
+
+Before moving to labeling, verify:
+
+□ You have at least 60 photos total
+□ Mix of ripe, unripe, and rotten tomatoes
+□ Different angles for each tomato
+□ Different backgrounds visible
+□ Photos are clear and in focus
+□ Good lighting (can see tomato clearly)
+□ Some photos have multiple tomatoes
+□ Some photos have other objects nearby
+
+
+SAMPLE BREAKDOWN:
+=================
+
+If you have 10 tomatoes:
+- 4 ripe tomatoes × 10 photos each = 40 photos
+- 4 unripe tomatoes × 10 photos each = 40 photos
+- 2 rotten tomatoes × 10 photos each = 20 photos
+
+TOTAL: 100 photos ✓ (Excellent!)
+
+
+WHAT'S NEXT:
+============
+
+After you finish taking photos:
+
+1. Copy all photos to one folder
+2. Upload to Google Drive (or prepare to upload)
+3. Move to STEP 2: Labeling in Label Studio
+
+
+READY TO START?
+===============
+
+1. Gather your tomatoes
+2. Set up good lighting
+3. Prepare different backgrounds
+4. Start photographing!
+
+Take your time - quality photos = better detection!
+
+Good luck! 📸🍅
+
+
+========================================================
+END OF STEP 1 - PHOTO GUIDE
+========================================================
