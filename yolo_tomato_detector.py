@@ -22,8 +22,8 @@ print("Press 'q' to quit")
 print()
 
 # Path to your trained model
-MODEL_PATH = "model.pt"  # Change this if your model has different name
-# MODEL_PATH = "best.pt"  # Uncomment if your model is named best.pt
+MODEL_PATH = "best.pt"  # Your trained model from yolo-train/my_model/train/weights/
+# MODEL_PATH = "model.pt"  # Alternative name if you renamed it
 
 print(f"📦 Loading YOLO model: {MODEL_PATH}")
 print("This may take 30-60 seconds on Raspberry Pi...")

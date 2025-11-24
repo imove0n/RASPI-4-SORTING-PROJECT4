@@ -1,0 +1,45 @@
+========================================================
+RASPBERRY PI COMMANDS - QUICK REFERENCE
+========================================================
+
+COPY THESE COMMANDS TO YOUR PI!
+
+
+STEP 1: NAVIGATE TO PROJECT
+============================
+cd ~/Desktop/RASPI\ 4\ SORTING\ PROJECT/
+
+
+STEP 2: CHECK FILES
+===================
+ls -lh best.pt yolo_tomato_detector.py
+
+
+STEP 3: INSTALL YOLO
+=====================
+pip3 install ultralytics
+
+
+STEP 4: TEST MODEL LOADS
+=========================
+python3 -c "from ultralytics import YOLO; model = YOLO('best.pt'); print('✅ Model loaded!')"
+
+
+STEP 5: RUN DETECTION
+======================
+python3 yolo_tomato_detector.py
+
+
+COMPARE WITH OLD SCRIPT:
+========================
+python3 simple_color_classifier.py
+
+
+ONE-LINE COMPLETE SETUP:
+=========================
+cd ~/Desktop/RASPI\ 4\ SORTING\ PROJECT/ && pip3 install ultralytics && python3 yolo_tomato_detector.py
+
+
+========================================================
+THAT'S IT! 5 SIMPLE COMMANDS!
+========================================================
