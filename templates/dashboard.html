@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tomato Storage Container Dashboard</title>
+    <title>Tomato Sorting System</title>
     <style>
         * {
             margin: 0;
@@ -12,350 +12,516 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0e27;
             min-height: 100vh;
-            padding: 20px;
-            color: #000000;
+            padding: 30px;
+            color: #ffffff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 20px;
-            background: #000000;
-            color: #ffffff;
+            margin-bottom: 50px;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
         }
 
         .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-            font-weight: bold;
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
         }
 
         .header p {
-            font-size: 1em;
-        }
-
-        .status-bar {
+            font-size: 1.1em;
+            color: #888;
+            font-weight: 400;
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
+            gap: 10px;
         }
 
-        .status-badge {
-            padding: 8px 16px;
-            background: #ffffff;
-            color: #000000;
-            font-size: 0.9em;
-            font-weight: bold;
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
         }
 
-        .section-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: left;
-            border-bottom: 2px solid #000000;
-            padding-bottom: 10px;
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
         }
 
         .containers-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 30px;
-            margin-bottom: 30px;
         }
 
-        @media (min-width: 900px) {
+        @media (min-width: 1200px) {
             .containers-grid {
                 grid-template-columns: 1fr 1fr;
             }
         }
 
         .storage-container {
-            background: #f5f5f5;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .storage-container:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .container-unripe {
+            color: #4ade80;
+        }
+
+        .container-ripe {
+            color: #ff6b6b;
         }
 
         .container-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #000000;
-            padding-bottom: 15px;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .container-name {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #000000;
+        .container-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: currentColor;
+            letter-spacing: 0.5px;
         }
 
-        .container-status {
-            padding: 6px 12px;
-            font-size: 0.75em;
-            font-weight: bold;
+        .sensor-badge {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            font-size: 0.7em;
+            font-weight: 600;
             text-transform: uppercase;
-            background: #000000;
-            color: #ffffff;
+            letter-spacing: 1.2px;
+            color: #999;
         }
 
-        .container-metrics {
+        .metrics-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .metric-box {
-            background: #ffffff;
-            border: 2px solid #000000;
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px 25px;
             text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .metric-box:hover {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .metric-label {
             font-size: 0.75em;
             text-transform: uppercase;
-            color: #666666;
-            font-weight: bold;
-            margin-bottom: 10px;
+            color: #666;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
         }
 
-        .metric-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #000000;
+        .gauge-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 15px;
         }
 
-        .metric-unit {
+        .gauge-svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 12;
+        }
+
+        .gauge-progress {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .gauge-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .gauge-value {
+            font-size: 2.2em;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .gauge-unit {
             font-size: 0.9em;
-            color: #666666;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .gauge-minmax {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7em;
+            color: #444;
+            font-weight: 600;
             margin-top: 5px;
         }
 
-        .tomato-count {
-            background: #000000;
-            padding: 25px;
+        .count-section {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid currentColor;
+            border-radius: 20px;
+            padding: 45px;
             text-align: center;
-            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .count-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, currentColor 0%, transparent 70%);
+            opacity: 0.03;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .count-label {
-            font-size: 0.85em;
+            font-size: 0.9em;
             text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 10px;
+            color: #666;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .count-display {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
         }
 
         .count-value {
-            font-size: 4em;
-            font-weight: bold;
+            font-size: 6em;
+            font-weight: 900;
+            color: currentColor;
+            line-height: 1;
+            text-shadow: 0 0 40px currentColor;
         }
 
         .count-unit {
-            font-size: 1em;
-            margin-top: 5px;
-        }
-
-        .rotten-section {
-            background: #f5f5f5;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-
-        .rotten-box {
-            background: #000000;
-            padding: 30px;
-            text-align: center;
-            color: #ffffff;
-        }
-
-        .stats-section {
-            background: #f5f5f5;
-            padding: 30px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border: 2px solid #000000;
-            padding: 25px;
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.8em;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #666666;
-        }
-
-        .stat-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #000000;
+            font-size: 1.8em;
+            color: #666;
+            font-weight: 600;
         }
 
         .footer {
             text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            background: #000000;
-            color: #ffffff;
+            margin-top: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+        }
+
+        .footer p {
+            font-size: 0.95em;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .update-time {
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .count-value {
+                font-size: 4em;
+            }
+
+            .metric-value {
+                font-size: 2.5em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>TOMATO STORAGE CONTAINER DASHBOARD</h1>
-            <p>Real-time Temperature Monitoring & Inventory Control</p>
-            <div class="status-bar">
-                <div class="status-badge">SYSTEM ONLINE</div>
-                <div class="status-badge">DHT22 ACTIVE</div>
-            </div>
+            <h1>TOMATO SORTING SYSTEM</h1>
+            <p>
+                <span class="status-dot"></span>
+                Real-Time Monitoring Dashboard
+            </p>
         </div>
 
-        <div class="section-title">STORAGE CONTAINERS</div>
         <div class="containers-grid">
             <!-- CONTAINER 1: UNRIPE -->
-            <div class="storage-container">
+            <div class="storage-container container-unripe">
                 <div class="container-header">
-                    <div class="container-name">CONTAINER 1: UNRIPE</div>
-                    <div class="container-status">REAL SENSOR</div>
+                    <div class="container-title">UNRIPE TOMATOES</div>
+                    <span class="sensor-badge">🎥 YOLO DETECTION</span>
                 </div>
-                <div class="container-metrics">
+
+                <div class="metrics-row">
                     <div class="metric-box">
                         <div class="metric-label">Temperature</div>
-                        <div class="metric-value" id="temp-container1">--</div>
-                        <div class="metric-unit">°C</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 180 180">
+                                <circle class="gauge-bg" cx="90" cy="90" r="74"></circle>
+                                <circle class="gauge-progress" id="temp-gauge-unripe" cx="90" cy="90" r="74"
+                                        stroke-dasharray="465" stroke-dashoffset="465"></circle>
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-value" id="temp-unripe">--</div>
+                                <div class="gauge-unit">°C</div>
+                            </div>
+                        </div>
+                        <div class="gauge-minmax">
+                            <span>0°</span>
+                            <span>50°</span>
+                        </div>
                     </div>
                     <div class="metric-box">
                         <div class="metric-label">Humidity</div>
-                        <div class="metric-value" id="humid-container1">--</div>
-                        <div class="metric-unit">%</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 180 180">
+                                <circle class="gauge-bg" cx="90" cy="90" r="74"></circle>
+                                <circle class="gauge-progress" id="humid-gauge-unripe" cx="90" cy="90" r="74"
+                                        stroke-dasharray="465" stroke-dashoffset="465"></circle>
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-value" id="humid-unripe">--</div>
+                                <div class="gauge-unit">%</div>
+                            </div>
+                        </div>
+                        <div class="gauge-minmax">
+                            <span>0%</span>
+                            <span>100%</span>
+                        </div>
                     </div>
                 </div>
-                <div class="tomato-count">
-                    <div class="count-label">TOMATO COUNT</div>
-                    <div class="count-value" id="count-container1">0</div>
-                    <div class="count-unit">tomatoes</div>
+
+                <div class="count-section">
+                    <div class="count-label">Tomato Count</div>
+                    <div class="count-display">
+                        <span class="count-value" id="count-unripe">0</span>
+                        <span class="count-unit">pcs</span>
+                    </div>
                 </div>
             </div>
 
             <!-- CONTAINER 2: RIPE -->
-            <div class="storage-container">
+            <div class="storage-container container-ripe">
                 <div class="container-header">
-                    <div class="container-name">CONTAINER 2: RIPE</div>
-                    <div class="container-status">SIMULATED</div>
+                    <div class="container-title">RIPE TOMATOES</div>
+                    <span class="sensor-badge">🎥 YOLO DETECTION</span>
                 </div>
-                <div class="container-metrics">
+
+                <div class="metrics-row">
                     <div class="metric-box">
                         <div class="metric-label">Temperature</div>
-                        <div class="metric-value" id="temp-container2">--</div>
-                        <div class="metric-unit">°C</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 180 180">
+                                <circle class="gauge-bg" cx="90" cy="90" r="74"></circle>
+                                <circle class="gauge-progress" id="temp-gauge-ripe" cx="90" cy="90" r="74"
+                                        stroke-dasharray="465" stroke-dashoffset="465"></circle>
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-value" id="temp-ripe">--</div>
+                                <div class="gauge-unit">°C</div>
+                            </div>
+                        </div>
+                        <div class="gauge-minmax">
+                            <span>0°</span>
+                            <span>50°</span>
+                        </div>
                     </div>
                     <div class="metric-box">
                         <div class="metric-label">Humidity</div>
-                        <div class="metric-value" id="humid-container2">--</div>
-                        <div class="metric-unit">%</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 180 180">
+                                <circle class="gauge-bg" cx="90" cy="90" r="74"></circle>
+                                <circle class="gauge-progress" id="humid-gauge-ripe" cx="90" cy="90" r="74"
+                                        stroke-dasharray="465" stroke-dashoffset="465"></circle>
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-value" id="humid-ripe">--</div>
+                                <div class="gauge-unit">%</div>
+                            </div>
+                        </div>
+                        <div class="gauge-minmax">
+                            <span>0%</span>
+                            <span>100%</span>
+                        </div>
                     </div>
                 </div>
-                <div class="tomato-count">
-                    <div class="count-label">TOMATO COUNT</div>
-                    <div class="count-value" id="count-container2">0</div>
-                    <div class="count-unit">tomatoes</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- ROTTEN SECTION -->
-        <div class="section-title">REJECTED TOMATOES</div>
-        <div class="rotten-section">
-            <div class="rotten-box">
-                <div class="count-label">ROTTEN/DEFECT COUNT</div>
-                <div class="count-value" id="count-rotten">0</div>
-                <div class="count-unit">rejected</div>
-            </div>
-        </div>
-
-        <!-- SYSTEM STATS -->
-        <div class="section-title">SYSTEM PERFORMANCE</div>
-        <div class="stats-section">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Total Sorted</div>
-                    <div class="stat-value" id="total-sorted">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Sorting Speed</div>
-                    <div class="stat-value" id="sort-speed">0.0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Success Rate</div>
-                    <div class="stat-value" id="success-rate">0%</div>
+                <div class="count-section">
+                    <div class="count-label">Tomato Count</div>
+                    <div class="count-display">
+                        <span class="count-value" id="count-ripe">0</span>
+                        <span class="count-unit">pcs</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="footer">
-            <p>AUTOMATED TOMATO SORTING SYSTEM - RASPBERRY PI 4 WITH DHT22 SENSOR</p>
-            <p style="margin-top: 8px;">LAST UPDATED: <span id="last-update">NEVER</span></p>
+            <p>AUTOMATED TOMATO SORTING SYSTEM</p>
+            <p class="update-time">Last Updated: <span id="last-update">--:--:--</span></p>
         </div>
     </div>
 
     <script>
+        function updateGauge(gaugeId, value, min, max) {
+            const gauge = document.getElementById(gaugeId);
+            if (!gauge) return;
+
+            const percentage = Math.min(Math.max((value - min) / (max - min), 0), 1);
+            const circumference = 465; // 2 * π * r (r=74)
+            const offset = circumference - (percentage * circumference);
+
+            gauge.style.strokeDashoffset = offset;
+        }
+
         async function updateData() {
             try {
                 const response = await fetch('/api/data');
                 if (!response.ok) throw new Error('Network error');
                 const data = await response.json();
 
-                // Container 1: UNRIPE
+                // Container 1: UNRIPE (Real sensor)
                 if (data.container_unripe) {
-                    document.getElementById('temp-container1').textContent = data.container_unripe.temperature.toFixed(1);
-                    document.getElementById('humid-container1').textContent = data.container_unripe.humidity.toFixed(1);
-                    document.getElementById('count-container1').textContent = data.container_unripe.count;
+                    const temp = data.container_unripe.temperature;
+                    const humid = data.container_unripe.humidity;
+
+                    document.getElementById('temp-unripe').textContent = temp.toFixed(1);
+                    document.getElementById('humid-unripe').textContent = humid.toFixed(1);
+                    document.getElementById('count-unripe').textContent = data.container_unripe.count;
+
+                    updateGauge('temp-gauge-unripe', temp, 0, 50);
+                    updateGauge('humid-gauge-unripe', humid, 0, 100);
                 }
 
-                // Container 2: RIPE
+                // Container 2: RIPE (Simulated)
                 if (data.container_ripe) {
-                    document.getElementById('temp-container2').textContent = data.container_ripe.temperature.toFixed(1);
-                    document.getElementById('humid-container2').textContent = data.container_ripe.humidity.toFixed(1);
-                    document.getElementById('count-container2').textContent = data.container_ripe.count;
+                    const temp = data.container_ripe.temperature;
+                    const humid = data.container_ripe.humidity;
+
+                    document.getElementById('temp-ripe').textContent = temp.toFixed(1);
+                    document.getElementById('humid-ripe').textContent = humid.toFixed(1);
+                    document.getElementById('count-ripe').textContent = data.container_ripe.count;
+
+                    updateGauge('temp-gauge-ripe', temp, 0, 50);
+                    updateGauge('humid-gauge-ripe', humid, 0, 100);
                 }
 
-                // Rotten
-                if (data.container_rotten) {
-                    document.getElementById('count-rotten').textContent = data.container_rotten.count;
-                }
-
-                // Stats
-                document.getElementById('total-sorted').textContent = data.total_sorted;
-                document.getElementById('sort-speed').textContent = data.current_speed + '/s';
-                document.getElementById('success-rate').textContent = data.success_rate + '%';
-                document.getElementById('last-update').textContent = new Date().toLocaleTimeString().toUpperCase();
+                // Update timestamp
+                document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
 
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error fetching data:', error);
             }
         }
 
+        // Update immediately and then every 2 seconds
         updateData();
         setInterval(updateData, 2000);
     </script>
