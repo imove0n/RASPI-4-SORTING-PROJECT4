@@ -2,7 +2,7 @@
 QUICK START GUIDE FOR YOUR NEXT SESSION
 ===============================================
 
-IMPORTANT: This conversation will NOT be saved when you close Claude Code!
+IMPORTANT: This conversation will NOT be saved when you close the session!
 
 WHAT IS SAVED:
 ==============
@@ -20,7 +20,7 @@ WHAT IS NOT SAVED:
 HOW TO CONTINUE THIS PROJECT:
 ==============================
 
-When you start a new Claude Code session, paste this message:
+When you start a new session, paste this message:
 
 ---COPY BELOW THIS LINE---
 
@@ -337,7 +337,7 @@ WHEN YOU'RE READY TO START:
 
 2. Decide which option (1, 2, or 3) to start with
 
-3. Start new Claude Code session with the message template above
+3. Start new session with the message template above
 
 4. I will help implement based on the saved plan!
 
