@@ -1,0 +1,78 @@
+========================================================
+TRAIN YOUR YOLO MODEL NOW - SUPER SIMPLE!
+========================================================
+
+YOU HAVE: data.zip (labeled images)
+YOU NEED: tomato_detector.pt (trained model)
+
+
+WHAT TO DO:
+===========
+
+1. Go to: https://colab.research.google.com
+
+2. Upload this file: Train_YOLO_Tomato.ipynb
+   (File → Upload notebook)
+
+3. Change to GPU:
+   Runtime → Change runtime type → GPU → Save
+
+4. Run 4 cells (just click ▶ on each):
+
+   CELL 1: Install YOLO (2 mins)
+   CELL 2: Upload data.zip (1 min)
+   CELL 3: Train model (1-2 HOURS - automated!)
+   CELL 4: Download tomato_detector.pt
+
+5. Done! You have trained model!
+
+
+THAT'S IT! 🎯
+
+
+CELL 3 TAKES 1-2 HOURS:
+========================
+☕ Go get coffee
+💼 Work on other stuff
+📱 Check back later
+
+Training runs automatically!
+Just keep the tab open!
+
+
+AFTER TRAINING:
+===============
+You download: tomato_detector.pt
+
+This is your trained model!
+Copy it to Raspberry Pi!
+
+
+NEXT STEP (When you have Pi):
+==============================
+→ Copy tomato_detector.pt to Pi
+→ I'll help update your camera script
+→ Run detection
+→ Only detects tomatoes! ✅
+→ Ignores walls/shirts/backgrounds! ✅
+
+
+GO NOW:
+=======
+https://colab.research.google.com
+Upload: Train_YOLO_Tomato.ipynb
+Keep data.zip ready!
+
+
+TIME:
+=====
+Setup: 5 minutes
+Training: 1-2 hours (automated)
+Download: 1 minute
+
+
+========================================================
+START: https://colab.research.google.com
+FILE: Train_YOLO_Tomato.ipynb
+RESULT: tomato_detector.pt (your trained model!)
+========================================================
