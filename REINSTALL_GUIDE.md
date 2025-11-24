@@ -287,11 +287,11 @@ git push
 
 ---
 
-## Questions to Ask Claude Code After Reinstalling:
+## Next Steps After Reinstalling:
 
-1. "Can you help me test the YOLO detector?"
-2. "How do I improve detection accuracy?"
-3. "Can you help me add sorting mechanism control?"
+1. Test the YOLO detector
+2. Improve detection accuracy if needed
+3. Add sorting mechanism control
 
 ---
 

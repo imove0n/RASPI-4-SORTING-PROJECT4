@@ -78,13 +78,7 @@
             height: 10px;
             background: #4ade80;
             border-radius: 50%;
-            animation: pulse-dot 2s infinite;
             box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.1); }
         }
 
         .camera-section {
@@ -442,34 +436,14 @@
             </p>
         </div>
 
-        <!-- Live Camera Feeds -->
-        <div class="camera-section">
-            <div class="camera-header">
-                <h2>🎥 LIVE CAMERA FEEDS</h2>
-                <span class="camera-badge">YOLO Detection Active</span>
-            </div>
-            <div class="cameras-grid">
-                <div class="camera-box">
-                    <div class="camera-label">Camera 1</div>
-                    <div class="camera-container">
-                        <img id="camera-feed-1" src="/video_feed" alt="Camera 1 Feed">
-                    </div>
-                </div>
-                <div class="camera-box">
-                    <div class="camera-label">Camera 2</div>
-                    <div class="camera-container">
-                        <img id="camera-feed-2" src="/video_feed" alt="Camera 2 Feed">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Camera section removed -->
 
         <div class="containers-grid">
             <!-- CONTAINER 1: UNRIPE -->
             <div class="storage-container container-unripe">
                 <div class="container-header">
                     <div class="container-title">UNRIPE TOMATOES</div>
-                    <span class="sensor-badge">🎥 YOLO DETECTION</span>
+                    <span class="sensor-badge" id="badge-unripe">🌡️ REAL DHT22 SENSOR</span>
                 </div>
 
                 <div class="metrics-row">
@@ -524,7 +498,7 @@
             <div class="storage-container container-ripe">
                 <div class="container-header">
                     <div class="container-title">RIPE TOMATOES</div>
-                    <span class="sensor-badge">🎥 YOLO DETECTION</span>
+                    <span class="sensor-badge" id="badge-ripe">🌡️ REAL DHT22 SENSOR</span>
                 </div>
 
                 <div class="metrics-row">
@@ -604,23 +578,41 @@
                 if (data.container_unripe) {
                     const temp = data.container_unripe.temperature;
                     const humid = data.container_unripe.humidity;
+                    const status = data.container_unripe.status;
 
                     document.getElementById('temp-unripe').textContent = temp.toFixed(1);
                     document.getElementById('humid-unripe').textContent = humid.toFixed(1);
                     document.getElementById('count-unripe').textContent = data.container_unripe.count;
 
+                    // Update badge based on sensor status
+                    const badge = document.getElementById('badge-unripe');
+                    if (status === 'active') {
+                        badge.textContent = '🌡️ REAL DHT22 SENSOR';
+                    } else {
+                        badge.textContent = '📊 SIMULATED DATA (Sensor Offline)';
+                    }
+
                     updateGauge('temp-gauge-unripe', temp, 0, 50);
                     updateGauge('humid-gauge-unripe', humid, 0, 100);
                 }
 
-                // Container 2: RIPE (Simulated)
+                // Container 2: RIPE (Real sensor)
                 if (data.container_ripe) {
                     const temp = data.container_ripe.temperature;
                     const humid = data.container_ripe.humidity;
+                    const status = data.container_ripe.status;
 
                     document.getElementById('temp-ripe').textContent = temp.toFixed(1);
                     document.getElementById('humid-ripe').textContent = humid.toFixed(1);
                     document.getElementById('count-ripe').textContent = data.container_ripe.count;
+
+                    // Update badge based on sensor status
+                    const badge = document.getElementById('badge-ripe');
+                    if (status === 'active') {
+                        badge.textContent = '🌡️ REAL DHT22 SENSOR';
+                    } else {
+                        badge.textContent = '📊 SIMULATED DATA (Sensor Offline)';
+                    }
 
                     updateGauge('temp-gauge-ripe', temp, 0, 50);
                     updateGauge('humid-gauge-ripe', humid, 0, 100);

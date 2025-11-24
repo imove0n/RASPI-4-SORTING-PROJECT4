@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-YOLO TOMATO DETECTOR - Uses Your Trained Model!
+YOLO TOMATO DETECTOR - OPTIMIZED for Raspberry Pi!
 Only detects actual tomatoes - ignores walls, shirts, backgrounds!
 """
 
@@ -10,13 +10,14 @@ import cv2
 import time
 
 print("=" * 70)
-print("🍅 YOLO TOMATO DETECTOR - PRODUCTION VERSION")
+print("🍅 YOLO TOMATO DETECTOR - OPTIMIZED VERSION")
 print("=" * 70)
 print()
 print("This uses your trained YOLO model!")
 print("✅ Only detects actual tomatoes")
 print("✅ Ignores walls, shirts, backgrounds")
 print("✅ Classifies as ripe or unripe")
+print("✅ OPTIMIZED for faster FPS on Raspberry Pi!")
 print()
 print("Press 'q' to quit")
 print()
@@ -46,11 +47,12 @@ class_names = model.names
 print(f"📋 Detection classes: {class_names}")
 print()
 
-# Initialize Pi Camera
+# Initialize Pi Camera - sweet spot resolution
 print("📷 Initializing camera...")
 camera = Picamera2()
+# Sweet spot: good enough for detection, small enough for speed
 config = camera.create_preview_configuration(
-    main={"size": (640, 480)}
+    main={"size": (320, 240)}  # Sweet spot for speed + accuracy
 )
 camera.configure(config)
 camera.start()
@@ -66,6 +68,13 @@ print()
 total_detections = 0
 ripe_count = 0
 unripe_count = 0
+frame_count = 0
+start_time = time.time()
+
+# Frame skipping for speed - SWEET SPOT
+SKIP_FRAMES = 2  # Process every 3rd frame (sweet spot)
+skip_counter = 0
+last_results = None
 
 try:
     while True:
@@ -75,11 +84,29 @@ try:
         # Convert RGB to BGR for OpenCV
         display_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
-        # Run YOLO detection
-        results = model(display_frame, verbose=False)
+        # Only run detection every SKIP_FRAMES frames
+        if skip_counter % (SKIP_FRAMES + 1) == 0:
+            # Run YOLO detection with SWEET SPOT settings
+            results = model.predict(
+                display_frame,
+                verbose=False,
+                imgsz=320,  # Match camera size for speed
+                conf=0.45,  # Balanced confidence
+                iou=0.45,   # Standard IOU
+                half=False, # Don't use FP16 (not supported on Pi CPU)
+                device='cpu',  # Explicitly use CPU
+                max_det=10  # Allow 10 detections
+            )
+            last_results = results
+        else:
+            # Reuse last detection results
+            results = last_results if last_results else []
+
+        skip_counter += 1
 
         # Process detections
         detections_this_frame = 0
+        frame_count += 1
 
         for result in results:
             boxes = result.boxes
@@ -109,70 +136,50 @@ try:
                     else:
                         color = (255, 0, 255)  # Magenta for others
 
-                    # Draw bounding box
-                    cv2.rectangle(display_frame, (x1, y1), (x2, y2), color, 2)
+                    # Draw bounding box (thinner line for speed)
+                    cv2.rectangle(display_frame, (x1, y1), (x2, y2), color, 1)
 
                     # Create label with confidence
                     label = f"{class_name} {confidence:.2f}"
 
-                    # Get label size
-                    (label_w, label_h), _ = cv2.getTextSize(
-                        label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2
-                    )
-
-                    # Draw label background
-                    cv2.rectangle(
-                        display_frame,
-                        (x1, y1 - label_h - 10),
-                        (x1 + label_w, y1),
-                        color,
-                        -1
-                    )
-
-                    # Draw label text
+                    # Draw label text (simplified - no background for speed)
                     cv2.putText(
                         display_frame,
                         label,
                         (x1, y1 - 5),
                         cv2.FONT_HERSHEY_SIMPLEX,
-                        0.6,
-                        (255, 255, 255),
-                        2
+                        0.4,  # Smaller font
+                        color,
+                        1  # Thinner text
                     )
 
-        # Add statistics overlay
-        stats_y = 30
+        # Calculate FPS
+        elapsed_time = time.time() - start_time
+        fps = frame_count / elapsed_time if elapsed_time > 0 else 0
+
+        # Add statistics overlay (simplified for speed)
         cv2.putText(
             display_frame,
-            f"Detected: {detections_this_frame} tomatoes",
-            (10, stats_y),
+            f"FPS: {fps:.1f} | Det: {detections_this_frame}",
+            (5, 15),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.7,
-            (255, 255, 0),
-            2
+            0.4,
+            (0, 255, 255),
+            1
         )
 
-        stats_y += 30
         cv2.putText(
             display_frame,
-            f"Total - Ripe: {ripe_count} | Unripe: {unripe_count}",
-            (10, stats_y),
+            f"Ripe: {ripe_count} | Unripe: {unripe_count}",
+            (5, 30),
             cv2.FONT_HERSHEY_SIMPLEX,
-            0.6,
+            0.4,
             (255, 255, 255),
-            2
+            1
         )
 
-        # Add instructions
-        cv2.putText(
-            display_frame,
-            "Press 'q' to quit",
-            (10, 460),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.6,
-            (255, 255, 255),
-            2
-        )
+        # Upscale for display (2x)
+        display_frame = cv2.resize(display_frame, (640, 480), interpolation=cv2.INTER_NEAREST)
 
         # Show frame
         cv2.imshow('YOLO Tomato Detector', display_frame)
