@@ -1,0 +1,21 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "Ripe"
+    },
+    {
+      "id": 1,
+      "name": "Rotten"
+    },
+    {
+      "id": 2,
+      "name": "Unripe"
+    }
+  ],
+  "info": {
+    "year": 2025,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}
