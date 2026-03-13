@@ -396,3 +396,8 @@ For detailed reinstallation guide (switching to Raspberry Pi OS Bullseye), see [
 **Last Updated:** November 25, 2025
 
 🍅 Happy Sorting!
+
+
+
+hostname -I
+
