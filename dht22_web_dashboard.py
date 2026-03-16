@@ -4,16 +4,109 @@ DHT22 Web Dashboard Server
 Access from any device on your network via web browser
 """
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 import board
 import adafruit_dht
 import time
 import socket
+import RPi.GPIO as GPIO
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
+
+# --- BTS7960 Motor Driver Setup (Conveyor Belt) ---
+# Wiring:
+#   RPWM  → GPIO 25 (Pin 22) - Forward PWM speed
+#   LPWM  → GPIO 24 (Pin 18) - Reverse PWM speed
+#   R_EN  → GPIO 17 (Pin 11) - Right Enable
+#   L_EN  → GPIO 27 (Pin 13) - Left Enable
+#   VCC   → 3.3V (Pin 1)
+#   GND   → Pi GND (Pin 9)
+#   B+    → External 12V PSU +
+#   B-    → External 12V PSU -
+#   M+    → Conveyor motor wire 1
+#   M-    → Conveyor motor wire 2
+MOTOR_RPWM = 25   # Forward PWM
+MOTOR_LPWM = 24   # Reverse PWM
+MOTOR_R_EN = 17   # Right Enable
+MOTOR_L_EN = 27   # Left Enable
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(MOTOR_RPWM, GPIO.OUT)
+GPIO.setup(MOTOR_LPWM, GPIO.OUT)
+GPIO.setup(MOTOR_R_EN, GPIO.OUT)
+GPIO.setup(MOTOR_L_EN, GPIO.OUT)
+
+# PWM on both direction pins (1 kHz for BTS7960)
+pwm_forward = GPIO.PWM(MOTOR_RPWM, 1000)
+pwm_reverse = GPIO.PWM(MOTOR_LPWM, 1000)
+pwm_forward.start(0)
+pwm_reverse.start(0)
+
+# Enable the driver (both enables HIGH)
+GPIO.output(MOTOR_R_EN, GPIO.HIGH)
+GPIO.output(MOTOR_L_EN, GPIO.HIGH)
+
+# Conveyor state
+conveyor_state = {
+    'running': False,
+    'speed': 75,       # default speed percentage (0-100)
+    'direction': 'forward'
+}
+
+def conveyor_stop():
+    pwm_forward.ChangeDutyCycle(0)
+    pwm_reverse.ChangeDutyCycle(0)
+    conveyor_state['running'] = False
+
+def conveyor_forward(speed=None):
+    if speed is not None:
+        conveyor_state['speed'] = speed
+    pwm_reverse.ChangeDutyCycle(0)
+    pwm_forward.ChangeDutyCycle(conveyor_state['speed'])
+    conveyor_state['running'] = True
+    conveyor_state['direction'] = 'forward'
+
+def conveyor_reverse(speed=None):
+    if speed is not None:
+        conveyor_state['speed'] = speed
+    pwm_forward.ChangeDutyCycle(0)
+    pwm_reverse.ChangeDutyCycle(conveyor_state['speed'])
+    conveyor_state['running'] = True
+    conveyor_state['direction'] = 'reverse'
+
+print("✓ BTS7960 Motor Driver initialized (RPWM=GPIO25, LPWM=GPIO24, EN=GPIO17)")
+
+# --- MG996R Servo Motor Setup (Sorting Gate) ---
+# Wiring:
+#   Signal (orange) → GPIO 21 (Pin 40)
+#   VCC (red)       → 5V (Pin 2)
+#   GND (brown)     → GND (Pin 39)
+#   180-degree servo: 0°=2.5%, 90°=7.5%, 180°=12.5% duty cycle at 50Hz
+SERVO_PIN = 21
+GPIO.setup(SERVO_PIN, GPIO.OUT)
+servo_pwm = GPIO.PWM(SERVO_PIN, 50)  # 50Hz for servo
+servo_pwm.start(0)
+
+servo_state = {
+    'angle': 90,  # default center position
+}
+
+def set_servo_angle(angle):
+    """Set servo to angle (0-180 degrees)"""
+    angle = max(0, min(180, angle))
+    duty = 2.5 + (angle / 180.0) * 10.0  # 2.5% to 12.5%
+    servo_pwm.ChangeDutyCycle(duty)
+    time.sleep(0.3)
+    servo_pwm.ChangeDutyCycle(0)  # Stop signal to prevent jitter
+    servo_state['angle'] = angle
+
+# Move to center position on startup
+set_servo_angle(90)
+print("✓ MG996R Servo initialized (GPIO 21, Pin 40) - 180°")
 
 # Initialize DHT22 sensors
 print("Initializing DHT22 sensors...")
@@ -192,6 +285,71 @@ def get_data():
     return jsonify(response_data)
 
 
+@app.route('/api/conveyor', methods=['GET'])
+def get_conveyor():
+    """Get current conveyor state"""
+    return jsonify(conveyor_state)
+
+
+@app.route('/api/conveyor', methods=['POST'])
+def control_conveyor():
+    """Control conveyor belt: action = start/stop/reverse, speed = 0-100"""
+    data = request.get_json()
+    action = data.get('action', '')
+    speed = data.get('speed')
+
+    if speed is not None:
+        speed = max(0, min(100, int(speed)))
+        conveyor_state['speed'] = speed
+
+    if action == 'start':
+        if conveyor_state['direction'] == 'reverse':
+            conveyor_reverse(speed)
+        else:
+            conveyor_forward(speed)
+    elif action == 'stop':
+        conveyor_stop()
+    elif action == 'forward':
+        conveyor_forward(speed)
+    elif action == 'reverse':
+        conveyor_reverse(speed)
+    elif action == 'speed' and speed is not None:
+        # Update speed without changing direction/state
+        if conveyor_state['running']:
+            if conveyor_state['direction'] == 'forward':
+                pwm_forward.ChangeDutyCycle(conveyor_state['speed'])
+            else:
+                pwm_reverse.ChangeDutyCycle(conveyor_state['speed'])
+
+    return jsonify(conveyor_state)
+
+
+@app.route('/api/servo', methods=['GET'])
+def get_servo():
+    """Get current servo state"""
+    return jsonify(servo_state)
+
+
+@app.route('/api/servo', methods=['POST'])
+def control_servo():
+    """Control servo: angle = 0-180, or action = 'sweep' for full 0->180->0"""
+    data = request.get_json()
+    action = data.get('action', '')
+    angle = data.get('angle')
+
+    if action == 'sweep':
+        set_servo_angle(0)
+        time.sleep(0.5)
+        set_servo_angle(180)
+        time.sleep(0.5)
+        set_servo_angle(0)
+    elif angle is not None:
+        angle = max(0, min(180, int(angle)))
+        set_servo_angle(angle)
+
+    return jsonify(servo_state)
+
+
 @app.route('/api/status')
 def get_status():
     """API endpoint for server status"""
@@ -237,6 +395,11 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\n\nServer stopped by user")
     finally:
+        conveyor_stop()
+        pwm_forward.stop()
+        pwm_reverse.stop()
+        servo_pwm.stop()
+        GPIO.cleanup()
         dht1.exit()
         dht2.exit()
         print("Cleanup complete. Goodbye!")

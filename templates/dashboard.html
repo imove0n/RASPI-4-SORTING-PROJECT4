@@ -373,6 +373,389 @@
             font-weight: 600;
         }
 
+        /* Conveyor Control Panel */
+        .conveyor-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .conveyor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .conveyor-header h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .conveyor-status-badge {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s;
+        }
+
+        .conveyor-status-badge.stopped {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        .conveyor-status-badge.running {
+            background: rgba(74, 222, 128, 0.2);
+            border: 1px solid rgba(74, 222, 128, 0.4);
+            color: #4ade80;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .conveyor-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .control-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 18px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-start:hover {
+            box-shadow: 0 6px 30px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-stop:hover {
+            box-shadow: 0 6px 30px rgba(239, 68, 68, 0.5);
+        }
+
+        .btn-reverse {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-reverse:hover {
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .speed-control {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .speed-label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .speed-value-display {
+            font-size: 4em;
+            font-weight: 900;
+            color: #f59e0b;
+            text-align: center;
+            line-height: 1;
+            margin-bottom: 5px;
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .speed-value-unit {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .speed-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            cursor: pointer;
+            box-shadow: 0 2px 15px rgba(245, 158, 11, 0.5);
+            transition: all 0.2s;
+        }
+
+        .speed-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.7);
+        }
+
+        .speed-presets {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .preset-btn {
+            padding: 10px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border-radius: 10px;
+            font-size: 0.8em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: rgba(245, 158, 11, 0.25);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .conveyor-info {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .info-box {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            color: #555;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #ccc;
+        }
+
+        @media (max-width: 768px) {
+            .conveyor-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .conveyor-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .speed-presets {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Servo Control Panel */
+        .servo-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .servo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .servo-header h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #a78bfa;
+        }
+
+        .servo-angle-badge {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: rgba(167, 139, 250, 0.2);
+            border: 1px solid rgba(167, 139, 250, 0.4);
+            color: #a78bfa;
+        }
+
+        .servo-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .servo-angle-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .servo-angle-value {
+            font-size: 5em;
+            font-weight: 900;
+            color: #a78bfa;
+            line-height: 1;
+            margin-bottom: 5px;
+            text-shadow: 0 0 30px rgba(167, 139, 250, 0.4);
+        }
+
+        .servo-angle-unit {
+            font-size: 1em;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .servo-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        .servo-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            cursor: pointer;
+            box-shadow: 0 2px 15px rgba(167, 139, 250, 0.5);
+        }
+
+        .servo-presets {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .servo-preset-btn {
+            padding: 18px 24px;
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+            border-radius: 14px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .servo-preset-btn:hover {
+            background: rgba(167, 139, 250, 0.25);
+            border-color: rgba(167, 139, 250, 0.5);
+        }
+
+        .servo-preset-btn:active {
+            transform: scale(0.97);
+        }
+
+        @media (max-width: 768px) {
+            .servo-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .servo-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -550,6 +933,81 @@
             </div>
         </div>
 
+        <!-- CONVEYOR BELT CONTROL -->
+        <div class="conveyor-section">
+            <div class="conveyor-header">
+                <h2>CONVEYOR BELT</h2>
+                <span class="conveyor-status-badge stopped" id="conveyor-badge">STOPPED</span>
+            </div>
+
+            <div class="conveyor-controls">
+                <div class="control-buttons">
+                    <div class="btn-row">
+                        <button class="btn btn-start" onclick="conveyorAction('forward')">FORWARD</button>
+                        <button class="btn btn-stop" onclick="conveyorAction('stop')">STOP</button>
+                    </div>
+                    <div class="btn-row">
+                        <button class="btn btn-reverse" onclick="conveyorAction('reverse')">REVERSE</button>
+                    </div>
+
+                    <div class="conveyor-info">
+                        <div class="info-box">
+                            <div class="info-label">Direction</div>
+                            <div class="info-value" id="conveyor-direction">--</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Status</div>
+                            <div class="info-value" id="conveyor-status">OFF</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speed-control">
+                    <div class="speed-label">Motor Speed</div>
+                    <div class="speed-value-display" id="speed-display">75</div>
+                    <div class="speed-value-unit">%</div>
+                    <input type="range" min="0" max="100" value="75" class="speed-slider" id="speed-slider"
+                           oninput="updateSpeedDisplay(this.value)" onchange="setSpeed(this.value)">
+                    <div class="speed-presets">
+                        <button class="preset-btn" onclick="setSpeed(25)">25%</button>
+                        <button class="preset-btn" onclick="setSpeed(50)">50%</button>
+                        <button class="preset-btn" onclick="setSpeed(75)">75%</button>
+                        <button class="preset-btn" onclick="setSpeed(100)">MAX</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVO MOTOR CONTROL -->
+        <div class="servo-section">
+            <div class="servo-header">
+                <h2>SORTING GATE</h2>
+                <span class="servo-angle-badge" id="servo-badge">90°</span>
+            </div>
+
+            <div class="servo-controls">
+                <div class="servo-angle-display">
+                    <div class="servo-angle-value" id="servo-angle-display">90</div>
+                    <div class="servo-angle-unit">degrees</div>
+                    <input type="range" min="0" max="180" value="90" class="servo-slider" id="servo-slider"
+                           oninput="document.getElementById('servo-angle-display').textContent=this.value"
+                           onchange="setServoAngle(this.value)">
+                    <div class="gauge-minmax" style="margin-top:10px;">
+                        <span>0°</span>
+                        <span>90°</span>
+                        <span>180°</span>
+                    </div>
+                </div>
+
+                <div class="servo-presets">
+                    <button class="servo-preset-btn" onclick="setServoAngle(0)">0° — LEFT</button>
+                    <button class="servo-preset-btn" onclick="setServoAngle(90)">90° — CENTER</button>
+                    <button class="servo-preset-btn" onclick="setServoAngle(180)">180° — RIGHT</button>
+                    <button class="servo-preset-btn" style="background:rgba(236,72,153,0.15);border-color:rgba(236,72,153,0.4);color:#ec4899;margin-top:8px;font-size:1.1em;padding:22px 24px;" onclick="servoSweep()">FULL SWEEP 180°</button>
+                </div>
+            </div>
+        </div>
+
         <div class="footer">
             <p>AUTOMATED TOMATO SORTING SYSTEM</p>
             <p class="update-time">Last Updated: <span id="last-update">--:--:--</span></p>
@@ -626,9 +1084,131 @@
             }
         }
 
+        // --- Conveyor Belt Controls ---
+        function updateSpeedDisplay(val) {
+            document.getElementById('speed-display').textContent = val;
+        }
+
+        async function conveyorAction(action) {
+            try {
+                const speed = document.getElementById('speed-slider').value;
+                const res = await fetch('/api/conveyor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: action, speed: parseInt(speed) })
+                });
+                const state = await res.json();
+                updateConveyorUI(state);
+            } catch (e) {
+                console.error('Conveyor error:', e);
+            }
+        }
+
+        async function setSpeed(val) {
+            document.getElementById('speed-slider').value = val;
+            document.getElementById('speed-display').textContent = val;
+            try {
+                const res = await fetch('/api/conveyor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'speed', speed: parseInt(val) })
+                });
+                const state = await res.json();
+                updateConveyorUI(state);
+            } catch (e) {
+                console.error('Speed error:', e);
+            }
+        }
+
+        function updateConveyorUI(state) {
+            const badge = document.getElementById('conveyor-badge');
+            const direction = document.getElementById('conveyor-direction');
+            const status = document.getElementById('conveyor-status');
+
+            if (state.running) {
+                badge.textContent = 'RUNNING';
+                badge.className = 'conveyor-status-badge running';
+                status.textContent = 'ON';
+                status.style.color = '#4ade80';
+                direction.textContent = state.direction.toUpperCase();
+                direction.style.color = state.direction === 'forward' ? '#22c55e' : '#3b82f6';
+            } else {
+                badge.textContent = 'STOPPED';
+                badge.className = 'conveyor-status-badge stopped';
+                status.textContent = 'OFF';
+                status.style.color = '#ef4444';
+                direction.textContent = '--';
+                direction.style.color = '#ccc';
+            }
+
+            document.getElementById('speed-slider').value = state.speed;
+            document.getElementById('speed-display').textContent = state.speed;
+        }
+
+        // Poll conveyor state
+        async function pollConveyor() {
+            try {
+                const res = await fetch('/api/conveyor');
+                const state = await res.json();
+                updateConveyorUI(state);
+            } catch (e) {}
+        }
+
+        // --- Servo Controls ---
+        async function setServoAngle(angle) {
+            document.getElementById('servo-slider').value = angle;
+            document.getElementById('servo-angle-display').textContent = angle;
+            document.getElementById('servo-badge').textContent = angle + '°';
+            try {
+                const res = await fetch('/api/servo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ angle: parseInt(angle) })
+                });
+                const state = await res.json();
+                document.getElementById('servo-slider').value = state.angle;
+                document.getElementById('servo-angle-display').textContent = state.angle;
+                document.getElementById('servo-badge').textContent = state.angle + '°';
+            } catch (e) {
+                console.error('Servo error:', e);
+            }
+        }
+
+        async function servoSweep() {
+            document.getElementById('servo-badge').textContent = 'SWEEPING...';
+            try {
+                const res = await fetch('/api/servo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'sweep' })
+                });
+                const state = await res.json();
+                document.getElementById('servo-slider').value = state.angle;
+                document.getElementById('servo-angle-display').textContent = state.angle;
+                document.getElementById('servo-badge').textContent = state.angle + '°';
+            } catch (e) {
+                console.error('Sweep error:', e);
+                document.getElementById('servo-badge').textContent = 'ERROR';
+            }
+        }
+
+        async function pollServo() {
+            try {
+                const res = await fetch('/api/servo');
+                const state = await res.json();
+                document.getElementById('servo-slider').value = state.angle;
+                document.getElementById('servo-angle-display').textContent = state.angle;
+                document.getElementById('servo-badge').textContent = state.angle + '°';
+            } catch (e) {}
+        }
+
         // Update immediately and then every 2 seconds
         updateData();
+        pollConveyor();
+        pollServo();
         setInterval(updateData, 2000);
+        setInterval(pollConveyor, 3000);
+        setInterval(pollServo, 3000);
     </script>
 </body>
 </html>
