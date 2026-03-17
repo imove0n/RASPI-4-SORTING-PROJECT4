@@ -756,6 +756,201 @@
             }
         }
 
+        /* Servo 2 - Sorting Arm */
+        .servo2-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .servo2-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .servo2-header h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #06b6d4;
+        }
+
+        .servo2-position-badge {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            color: #06b6d4;
+        }
+
+        .servo2-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .servo2-btn {
+            padding: 30px 24px;
+            border: 2px solid;
+            border-radius: 16px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: center;
+        }
+
+        .servo2-btn:active {
+            transform: scale(0.97);
+        }
+
+        .servo2-btn.left-btn {
+            background: rgba(234, 179, 8, 0.1);
+            border-color: rgba(234, 179, 8, 0.4);
+            color: #eab308;
+        }
+
+        .servo2-btn.left-btn:hover {
+            background: rgba(234, 179, 8, 0.25);
+        }
+
+        .servo2-btn.center-btn {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.4);
+            color: #06b6d4;
+        }
+
+        .servo2-btn.center-btn:hover {
+            background: rgba(6, 182, 212, 0.25);
+        }
+
+        .servo2-btn.right-btn {
+            background: rgba(236, 72, 153, 0.1);
+            border-color: rgba(236, 72, 153, 0.4);
+            color: #ec4899;
+        }
+
+        .servo2-btn.right-btn:hover {
+            background: rgba(236, 72, 153, 0.25);
+        }
+
+        .servo2-btn.active {
+            box-shadow: 0 0 25px currentColor;
+        }
+
+        .servo2-btn-label {
+            font-size: 0.7em;
+            margin-top: 8px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        /* Component Test Section */
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .test-header h2 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .test-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .test-card-title {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+        }
+
+        .test-card-status {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            min-height: 30px;
+        }
+
+        .test-btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .test-btn:hover {
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .test-btn:active {
+            transform: scale(0.97);
+        }
+
+        .test-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .servo2-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -987,23 +1182,69 @@
 
             <div class="servo-controls">
                 <div class="servo-angle-display">
-                    <div class="servo-angle-value" id="servo-angle-display">90</div>
+                    <div class="servo-angle-value" id="servo-angle-display">120</div>
                     <div class="servo-angle-unit">degrees</div>
-                    <input type="range" min="0" max="180" value="90" class="servo-slider" id="servo-slider"
+                    <input type="range" min="120" max="180" value="120" class="servo-slider" id="servo-slider"
                            oninput="document.getElementById('servo-angle-display').textContent=this.value"
                            onchange="setServoAngle(this.value)">
                     <div class="gauge-minmax" style="margin-top:10px;">
-                        <span>0°</span>
-                        <span>90°</span>
-                        <span>180°</span>
+                        <span>120° CLOSE</span>
+                        <span>180° OPEN</span>
                     </div>
                 </div>
 
                 <div class="servo-presets">
-                    <button class="servo-preset-btn" onclick="setServoAngle(0)">0° — LEFT</button>
-                    <button class="servo-preset-btn" onclick="setServoAngle(90)">90° — CENTER</button>
-                    <button class="servo-preset-btn" onclick="setServoAngle(180)">180° — RIGHT</button>
-                    <button class="servo-preset-btn" style="background:rgba(236,72,153,0.15);border-color:rgba(236,72,153,0.4);color:#ec4899;margin-top:8px;font-size:1.1em;padding:22px 24px;" onclick="servoSweep()">FULL SWEEP 180°</button>
+                    <button class="servo-preset-btn" style="background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.4);color:#22c55e;" onclick="servoAction('close')">120° — CLOSE GATE</button>
+                    <button class="servo-preset-btn" style="background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444;" onclick="servoAction('open')">180° — OPEN GATE</button>
+                    <button class="servo-preset-btn" style="background:rgba(236,72,153,0.15);border-color:rgba(236,72,153,0.4);color:#ec4899;margin-top:8px;font-size:1.1em;padding:22px 24px;" onclick="servoAction('sort')">SORT (OPEN → CLOSE)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVO 2 - SORTING ARM -->
+        <div class="servo2-section">
+            <div class="servo2-header">
+                <h2>SORTING ARM</h2>
+                <span class="servo2-position-badge" id="servo2-badge">CENTER</span>
+            </div>
+
+            <div class="servo2-controls">
+                <button class="servo2-btn left-btn" id="servo2-left" onclick="setServo2('left')">
+                    LEFT
+                    <div class="servo2-btn-label">Unripe</div>
+                </button>
+                <button class="servo2-btn center-btn active" id="servo2-center" onclick="setServo2('center')">
+                    CENTER
+                    <div class="servo2-btn-label">Default</div>
+                </button>
+                <button class="servo2-btn right-btn" id="servo2-right" onclick="setServo2('right')">
+                    RIGHT
+                    <div class="servo2-btn-label">Ripe</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- COMPONENT TEST - LOOP MODE -->
+        <div class="test-section">
+            <div class="test-header">
+                <h2>COMPONENT TEST</h2>
+            </div>
+
+            <div class="test-grid">
+                <div class="test-card">
+                    <div class="test-card-title">Conveyor Belt</div>
+                    <div class="test-card-status" id="test-conveyor-status" style="color:#666;">Stopped</div>
+                    <button class="test-btn" id="test-conveyor-btn" onclick="toggleConveyorLoop()">START LOOP</button>
+                </div>
+                <div class="test-card">
+                    <div class="test-card-title">Servo 1 - Gate</div>
+                    <div class="test-card-status" id="test-servo1-status" style="color:#666;">Stopped</div>
+                    <button class="test-btn" id="test-servo1-btn" onclick="toggleServo1Loop()">START LOOP</button>
+                </div>
+                <div class="test-card">
+                    <div class="test-card-title">Servo 2 - Sorter</div>
+                    <div class="test-card-status" id="test-servo2-status" style="color:#666;">Stopped</div>
+                    <button class="test-btn" id="test-servo2-btn" onclick="toggleServo2Loop()">START LOOP</button>
                 </div>
             </div>
         </div>
@@ -1174,20 +1415,20 @@
             }
         }
 
-        async function servoSweep() {
-            document.getElementById('servo-badge').textContent = 'SWEEPING...';
+        async function servoAction(action) {
+            document.getElementById('servo-badge').textContent = action === 'sort' ? 'SORTING...' : action.toUpperCase() + '...';
             try {
                 const res = await fetch('/api/servo', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'sweep' })
+                    body: JSON.stringify({ action: action })
                 });
                 const state = await res.json();
                 document.getElementById('servo-slider').value = state.angle;
                 document.getElementById('servo-angle-display').textContent = state.angle;
                 document.getElementById('servo-badge').textContent = state.angle + '°';
             } catch (e) {
-                console.error('Sweep error:', e);
+                console.error('Servo action error:', e);
                 document.getElementById('servo-badge').textContent = 'ERROR';
             }
         }
@@ -1202,13 +1443,176 @@
             } catch (e) {}
         }
 
+        // --- Servo 2 Controls ---
+        async function setServo2(position) {
+            // Update button active states
+            document.getElementById('servo2-left').classList.remove('active');
+            document.getElementById('servo2-center').classList.remove('active');
+            document.getElementById('servo2-right').classList.remove('active');
+            document.getElementById('servo2-' + position).classList.add('active');
+            document.getElementById('servo2-badge').textContent = position.toUpperCase();
+
+            try {
+                const res = await fetch('/api/servo2', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ position: position })
+                });
+                const state = await res.json();
+                updateServo2UI(state);
+            } catch (e) {
+                console.error('Servo 2 error:', e);
+            }
+        }
+
+        function updateServo2UI(state) {
+            document.getElementById('servo2-left').classList.remove('active');
+            document.getElementById('servo2-center').classList.remove('active');
+            document.getElementById('servo2-right').classList.remove('active');
+            document.getElementById('servo2-' + state.position).classList.add('active');
+            document.getElementById('servo2-badge').textContent = state.position.toUpperCase();
+        }
+
+        async function pollServo2() {
+            try {
+                const res = await fetch('/api/servo2');
+                const state = await res.json();
+                updateServo2UI(state);
+            } catch (e) {}
+        }
+
+        // --- Component Loop Functions ---
+        let conveyorLoopRunning = false;
+        let servo1LoopRunning = false;
+        let servo2LoopRunning = false;
+
+        async function toggleConveyorLoop() {
+            const btn = document.getElementById('test-conveyor-btn');
+            const status = document.getElementById('test-conveyor-status');
+
+            if (conveyorLoopRunning) {
+                conveyorLoopRunning = false;
+                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'stop' }) });
+                btn.textContent = 'START LOOP';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                status.textContent = 'Stopped';
+                status.style.color = '#666';
+                return;
+            }
+
+            conveyorLoopRunning = true;
+            btn.textContent = 'STOP LOOP';
+            btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+
+            while (conveyorLoopRunning) {
+                status.textContent = 'Forward...';
+                status.style.color = '#22c55e';
+                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'forward', speed: 50 }) });
+                await new Promise(r => setTimeout(r, 2000));
+                if (!conveyorLoopRunning) break;
+
+                status.textContent = 'Stopping...';
+                status.style.color = '#f59e0b';
+                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'stop' }) });
+                await new Promise(r => setTimeout(r, 500));
+                if (!conveyorLoopRunning) break;
+
+                status.textContent = 'Reverse...';
+                status.style.color = '#3b82f6';
+                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'reverse', speed: 50 }) });
+                await new Promise(r => setTimeout(r, 2000));
+                if (!conveyorLoopRunning) break;
+
+                status.textContent = 'Stopping...';
+                status.style.color = '#f59e0b';
+                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'stop' }) });
+                await new Promise(r => setTimeout(r, 500));
+            }
+        }
+
+        async function toggleServo1Loop() {
+            const btn = document.getElementById('test-servo1-btn');
+            const status = document.getElementById('test-servo1-status');
+
+            if (servo1LoopRunning) {
+                servo1LoopRunning = false;
+                btn.textContent = 'START LOOP';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                status.textContent = 'Stopped';
+                status.style.color = '#666';
+                return;
+            }
+
+            servo1LoopRunning = true;
+            btn.textContent = 'STOP LOOP';
+            btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+
+            while (servo1LoopRunning) {
+                status.textContent = 'Opening...';
+                status.style.color = '#ef4444';
+                await fetch('/api/servo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'open' }) });
+                await new Promise(r => setTimeout(r, 1000));
+                if (!servo1LoopRunning) break;
+
+                status.textContent = 'Closing...';
+                status.style.color = '#22c55e';
+                await fetch('/api/servo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'close' }) });
+                await new Promise(r => setTimeout(r, 1000));
+            }
+        }
+
+        async function toggleServo2Loop() {
+            const btn = document.getElementById('test-servo2-btn');
+            const status = document.getElementById('test-servo2-status');
+
+            if (servo2LoopRunning) {
+                servo2LoopRunning = false;
+                btn.textContent = 'START LOOP';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                status.textContent = 'Stopped';
+                status.style.color = '#666';
+                return;
+            }
+
+            servo2LoopRunning = true;
+            btn.textContent = 'STOP LOOP';
+            btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+
+            while (servo2LoopRunning) {
+                status.textContent = 'Left...';
+                status.style.color = '#eab308';
+                await fetch('/api/servo2', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ position: 'left' }) });
+                await new Promise(r => setTimeout(r, 1500));
+                if (!servo2LoopRunning) break;
+
+                status.textContent = 'Center...';
+                status.style.color = '#06b6d4';
+                await fetch('/api/servo2', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ position: 'center' }) });
+                await new Promise(r => setTimeout(r, 1500));
+                if (!servo2LoopRunning) break;
+
+                status.textContent = 'Right...';
+                status.style.color = '#ec4899';
+                await fetch('/api/servo2', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ position: 'right' }) });
+                await new Promise(r => setTimeout(r, 1500));
+                if (!servo2LoopRunning) break;
+
+                status.textContent = 'Center...';
+                status.style.color = '#06b6d4';
+                await fetch('/api/servo2', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ position: 'center' }) });
+                await new Promise(r => setTimeout(r, 1500));
+            }
+        }
+
         // Update immediately and then every 2 seconds
         updateData();
         pollConveyor();
         pollServo();
+        pollServo2();
         setInterval(updateData, 2000);
         setInterval(pollConveyor, 3000);
         setInterval(pollServo, 3000);
+        setInterval(pollServo2, 3000);
     </script>
 </body>
 </html>

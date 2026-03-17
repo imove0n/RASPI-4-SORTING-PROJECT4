@@ -92,21 +92,102 @@ servo_pwm = GPIO.PWM(SERVO_PIN, 50)  # 50Hz for servo
 servo_pwm.start(0)
 
 servo_state = {
-    'angle': 90,  # default center position
+    'angle': 120,  # default gate closed position
 }
+
+SERVO_REST = 120   # Gate closed (resting position)
+SERVO_OPEN = 180   # Gate open (sorting position)
+
+# Calibrated duty cycles for this specific servo mount
+SERVO_DUTY_CLOSE = 10.0   # Duty cycle for closed position (120°)
+SERVO_DUTY_OPEN = 12.5    # Duty cycle for open position (180°)
+
+def servo_pulse(duty):
+    """Send a strong, consistent PWM pulse to servo 1"""
+    # Double pulse for reliability on software PWM
+    servo_pwm.ChangeDutyCycle(duty)
+    time.sleep(0.3)
+    servo_pwm.ChangeDutyCycle(0)
+    time.sleep(0.05)
+    servo_pwm.ChangeDutyCycle(duty)
+    time.sleep(0.3)
+    servo_pwm.ChangeDutyCycle(0)
+
+def servo_open():
+    """Open gate using calibrated duty cycle"""
+    servo_pulse(SERVO_DUTY_OPEN)
+    servo_state['angle'] = SERVO_OPEN
+
+def servo_close():
+    """Close gate using calibrated duty cycle"""
+    servo_pulse(SERVO_DUTY_CLOSE)
+    servo_state['angle'] = SERVO_REST
 
 def set_servo_angle(angle):
     """Set servo to angle (0-180 degrees)"""
     angle = max(0, min(180, angle))
-    duty = 2.5 + (angle / 180.0) * 10.0  # 2.5% to 12.5%
-    servo_pwm.ChangeDutyCycle(duty)
-    time.sleep(0.3)
-    servo_pwm.ChangeDutyCycle(0)  # Stop signal to prevent jitter
+    duty = 2.0 + (angle / 180.0) * 10.5
+    servo_pulse(duty)
     servo_state['angle'] = angle
 
-# Move to center position on startup
-set_servo_angle(90)
-print("✓ MG996R Servo initialized (GPIO 21, Pin 40) - 180°")
+def servo_sort():
+    """Sorting action: open gate then close gate"""
+    servo_open()
+    time.sleep(0.5)
+    servo_close()
+
+# Move to resting position on startup
+servo_pwm.ChangeDutyCycle(SERVO_DUTY_CLOSE)
+time.sleep(0.5)
+servo_pwm.ChangeDutyCycle(0)
+servo_state['angle'] = SERVO_REST
+print("✓ MG996R Servo 1 - Gate (GPIO 21, Pin 40) - 180°")
+
+# --- MG996R Servo 2 - Sorting Arm (Left/Center/Right) ---
+# Wiring:
+#   Signal (orange) → GPIO 20 (Pin 38)
+#   VCC (red)       → Breadboard 5V rail
+#   GND (brown)     → Breadboard GND rail
+SERVO2_PIN = 20
+GPIO.setup(SERVO2_PIN, GPIO.OUT)
+servo2_pwm = GPIO.PWM(SERVO2_PIN, 50)  # 50Hz for servo
+servo2_pwm.start(0)
+
+# Calibrated duty cycles for servo 2
+SERVO2_DUTY_LEFT = 5.0
+SERVO2_DUTY_CENTER = 6.0
+SERVO2_DUTY_RIGHT = 7.0
+
+servo2_state = {
+    'position': 'center',
+}
+
+def servo2_pulse(duty):
+    """Send a strong, consistent PWM pulse to servo 2"""
+    servo2_pwm.ChangeDutyCycle(duty)
+    time.sleep(0.3)
+    servo2_pwm.ChangeDutyCycle(0)
+    time.sleep(0.05)
+    servo2_pwm.ChangeDutyCycle(duty)
+    time.sleep(0.3)
+    servo2_pwm.ChangeDutyCycle(0)
+
+def set_servo2_position(position):
+    """Set servo 2 to left, center, or right"""
+    if position == 'left':
+        servo2_pulse(SERVO2_DUTY_LEFT)
+    elif position == 'right':
+        servo2_pulse(SERVO2_DUTY_RIGHT)
+    else:
+        position = 'center'
+        servo2_pulse(SERVO2_DUTY_CENTER)
+    servo2_state['position'] = position
+
+# Move to center on startup
+servo2_pwm.ChangeDutyCycle(SERVO2_DUTY_CENTER)
+time.sleep(0.5)
+servo2_pwm.ChangeDutyCycle(0)
+print("✓ MG996R Servo 2 - Sorter (GPIO 20, Pin 38) - L/C/R")
 
 # Initialize DHT22 sensors
 print("Initializing DHT22 sensors...")
@@ -338,16 +419,37 @@ def control_servo():
     angle = data.get('angle')
 
     if action == 'sweep':
-        set_servo_angle(0)
+        servo_close()
         time.sleep(0.5)
-        set_servo_angle(180)
+        servo_open()
         time.sleep(0.5)
-        set_servo_angle(0)
+        servo_close()
+    elif action == 'sort':
+        servo_sort()
+    elif action == 'open':
+        servo_open()
+    elif action == 'close':
+        servo_close()
     elif angle is not None:
         angle = max(0, min(180, int(angle)))
         set_servo_angle(angle)
 
     return jsonify(servo_state)
+
+
+@app.route('/api/servo2', methods=['GET'])
+def get_servo2():
+    """Get current servo 2 state"""
+    return jsonify(servo2_state)
+
+
+@app.route('/api/servo2', methods=['POST'])
+def control_servo2():
+    """Control servo 2: position = left/center/right"""
+    data = request.get_json()
+    position = data.get('position', 'center')
+    set_servo2_position(position)
+    return jsonify(servo2_state)
 
 
 @app.route('/api/status')
@@ -399,6 +501,7 @@ if __name__ == '__main__':
         pwm_forward.stop()
         pwm_reverse.stop()
         servo_pwm.stop()
+        servo2_pwm.stop()
         GPIO.cleanup()
         dht1.exit()
         dht2.exit()
