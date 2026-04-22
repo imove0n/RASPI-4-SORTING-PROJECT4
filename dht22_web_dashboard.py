@@ -99,18 +99,20 @@ SERVO_REST = 120   # Gate closed (resting position)
 SERVO_OPEN = 180   # Gate open (sorting position)
 
 # Calibrated duty cycles for this specific servo mount
-SERVO_DUTY_CLOSE = 10.0   # Duty cycle for closed position (120°)
-SERVO_DUTY_OPEN = 12.5    # Duty cycle for open position (180°)
+SERVO_DUTY_CLOSE = 12.5   # Duty cycle for closed/lock position (physical end stop)
+SERVO_DUTY_OPEN  = 2.5    # Duty cycle for open position (other end)
 
 def servo_pulse(duty):
-    """Send a strong, consistent PWM pulse to servo 1"""
+    """Send a strong, consistent PWM pulse to servo 1 (180° positional)"""
     # Double pulse for reliability on software PWM
+    # Open uses 0.25s hold, close uses 0.252s hold — calibrated values
+    hold = 0.252 if duty == SERVO_DUTY_CLOSE else 0.25
     servo_pwm.ChangeDutyCycle(duty)
-    time.sleep(0.3)
+    time.sleep(hold)
     servo_pwm.ChangeDutyCycle(0)
     time.sleep(0.05)
     servo_pwm.ChangeDutyCycle(duty)
-    time.sleep(0.3)
+    time.sleep(hold)
     servo_pwm.ChangeDutyCycle(0)
 
 def servo_open():
@@ -144,6 +146,7 @@ servo_state['angle'] = SERVO_REST
 print("✓ MG996R Servo 1 - Gate (GPIO 21, Pin 40) - 180°")
 
 # --- MG996R Servo 2 - Sorting Arm (Left/Center/Right) ---
+# 180-DEGREE POSITIONAL SERVO — exact angles, no drift
 # Wiring:
 #   Signal (orange) → GPIO 20 (Pin 38)
 #   VCC (red)       → Breadboard 5V rail
@@ -153,41 +156,44 @@ GPIO.setup(SERVO2_PIN, GPIO.OUT)
 servo2_pwm = GPIO.PWM(SERVO2_PIN, 50)  # 50Hz for servo
 servo2_pwm.start(0)
 
-# Calibrated duty cycles for servo 2
-SERVO2_DUTY_LEFT = 5.0
-SERVO2_DUTY_CENTER = 6.0
-SERVO2_DUTY_RIGHT = 7.0
+# 180-degree positions for sorting arm
+# MG996R: 0°=2.5%, 90°=7.5%, 180°=12.5%
+# Adjust LEFT_ANGLE / RIGHT_ANGLE to tune sweep range
+SERVO2_LEFT_ANGLE   = 45    # degrees — LEFT bin
+SERVO2_CENTER_ANGLE = 90    # degrees — CENTER (default/resting)
+SERVO2_RIGHT_ANGLE  = 135   # degrees — RIGHT bin
+
+def _angle_to_duty(angle):
+    """Convert 0-180° to duty cycle for MG996R at 50Hz"""
+    return 2.5 + (angle / 180.0) * 10.0
 
 servo2_state = {
     'position': 'center',
+    'angle': SERVO2_CENTER_ANGLE,
 }
 
-def servo2_pulse(duty):
-    """Send a strong, consistent PWM pulse to servo 2"""
-    servo2_pwm.ChangeDutyCycle(duty)
-    time.sleep(0.3)
-    servo2_pwm.ChangeDutyCycle(0)
-    time.sleep(0.05)
-    servo2_pwm.ChangeDutyCycle(duty)
-    time.sleep(0.3)
-    servo2_pwm.ChangeDutyCycle(0)
-
 def set_servo2_position(position):
-    """Set servo 2 to left, center, or right"""
+    """Move servo 2 to exact angle position: left / center / right"""
     if position == 'left':
-        servo2_pulse(SERVO2_DUTY_LEFT)
+        angle = SERVO2_LEFT_ANGLE
     elif position == 'right':
-        servo2_pulse(SERVO2_DUTY_RIGHT)
+        angle = SERVO2_RIGHT_ANGLE
     else:
         position = 'center'
-        servo2_pulse(SERVO2_DUTY_CENTER)
+        angle = SERVO2_CENTER_ANGLE
+
+    duty = _angle_to_duty(angle)
+    servo2_pwm.ChangeDutyCycle(duty)
+    time.sleep(0.5)          # give servo time to reach position
+    servo2_pwm.ChangeDutyCycle(0)  # release signal to prevent jitter
     servo2_state['position'] = position
+    servo2_state['angle'] = angle
 
 # Move to center on startup
-servo2_pwm.ChangeDutyCycle(SERVO2_DUTY_CENTER)
+servo2_pwm.ChangeDutyCycle(_angle_to_duty(SERVO2_CENTER_ANGLE))
 time.sleep(0.5)
 servo2_pwm.ChangeDutyCycle(0)
-print("✓ MG996R Servo 2 - Sorter (GPIO 20, Pin 38) - L/C/R")
+print("✓ MG996R Servo 2 - Sorter (GPIO 20, Pin 38) - 180° positional L/C/R")
 
 # Initialize DHT22 sensors
 print("Initializing DHT22 sensors...")

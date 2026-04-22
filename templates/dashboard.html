@@ -1504,28 +1504,13 @@
             btn.textContent = 'STOP LOOP';
             btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
 
+            // Always start forward at max speed
+            status.textContent = 'Running Forward (100%)...';
+            status.style.color = '#22c55e';
+            await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'forward', speed: 100 }) });
+
+            // Keep running until stopped
             while (conveyorLoopRunning) {
-                status.textContent = 'Forward...';
-                status.style.color = '#22c55e';
-                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'forward', speed: 50 }) });
-                await new Promise(r => setTimeout(r, 2000));
-                if (!conveyorLoopRunning) break;
-
-                status.textContent = 'Stopping...';
-                status.style.color = '#f59e0b';
-                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'stop' }) });
-                await new Promise(r => setTimeout(r, 500));
-                if (!conveyorLoopRunning) break;
-
-                status.textContent = 'Reverse...';
-                status.style.color = '#3b82f6';
-                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'reverse', speed: 50 }) });
-                await new Promise(r => setTimeout(r, 2000));
-                if (!conveyorLoopRunning) break;
-
-                status.textContent = 'Stopping...';
-                status.style.color = '#f59e0b';
-                await fetch('/api/conveyor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'stop' }) });
                 await new Promise(r => setTimeout(r, 500));
             }
         }
