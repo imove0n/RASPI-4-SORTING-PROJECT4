@@ -4,13 +4,16 @@ DHT22 Web Dashboard Server
 Access from any device on your network via web browser
 """
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, Response
 from flask_cors import CORS
 import board
 import adafruit_dht
 import time
 import socket
+import threading
+import cv2
 import RPi.GPIO as GPIO
+from ultralytics import YOLO
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -474,6 +477,56 @@ def control_servo2():
     else:
         set_servo2_position(position or 'center')
     return jsonify(servo2_state)
+
+
+# --- Camera Stream ---
+YOLO_MODEL_PATH = 'my_model11n480/train/weights/best_ncnn_model'
+yolo_model = None
+camera_cap = None
+camera_lock = threading.Lock()
+
+def get_camera():
+    global camera_cap
+    if camera_cap is None or not camera_cap.isOpened():
+        camera_cap = cv2.VideoCapture(0)
+        camera_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        camera_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    return camera_cap
+
+def get_yolo():
+    global yolo_model
+    if yolo_model is None:
+        try:
+            yolo_model = YOLO(YOLO_MODEL_PATH, task='detect')
+        except Exception:
+            pass
+    return yolo_model
+
+def generate_frames(detect=False):
+    with camera_lock:
+        cap = get_camera()
+        model = get_yolo() if detect else None
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            if detect and model:
+                results = model(frame, imgsz=480, conf=0.4, verbose=False)
+                frame = results[0].plot()
+            _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 70])
+            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+
+@app.route('/camera')
+def camera_feed():
+    """Raw camera stream"""
+    return Response(generate_frames(detect=False),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/camera/detect')
+def camera_detect():
+    """Camera stream with YOLO detection overlay"""
+    return Response(generate_frames(detect=True),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/api/status')
