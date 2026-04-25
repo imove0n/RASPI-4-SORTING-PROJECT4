@@ -183,9 +183,14 @@ def set_servo2_position(position):
         angle = SERVO2_CENTER_ANGLE
 
     duty = _angle_to_duty(angle)
+    # Double pulse for reliability — same technique as servo 1
     servo2_pwm.ChangeDutyCycle(duty)
-    time.sleep(0.5)          # give servo time to reach position
-    servo2_pwm.ChangeDutyCycle(0)  # release signal to prevent jitter
+    time.sleep(0.5)
+    servo2_pwm.ChangeDutyCycle(0)
+    time.sleep(0.05)
+    servo2_pwm.ChangeDutyCycle(duty)
+    time.sleep(0.5)
+    servo2_pwm.ChangeDutyCycle(0)
     servo2_state['position'] = position
     servo2_state['angle'] = angle
 
@@ -451,10 +456,23 @@ def get_servo2():
 
 @app.route('/api/servo2', methods=['POST'])
 def control_servo2():
-    """Control servo 2: position = left/center/right"""
+    """Control servo 2: position = left/center/right, or angle = 0-180"""
     data = request.get_json()
-    position = data.get('position', 'center')
-    set_servo2_position(position)
+    position = data.get('position')
+    angle = data.get('angle')
+    if position == 'release':
+        servo2_pwm.ChangeDutyCycle(0)  # go limp, free to move by hand
+        servo2_state['position'] = 'released'
+    elif angle is not None:
+        angle = max(0, min(180, int(angle)))
+        duty = 2.5 + (angle / 180.0) * 10.0
+        servo2_pwm.ChangeDutyCycle(duty)
+        time.sleep(0.5)
+        servo2_pwm.ChangeDutyCycle(0)
+        servo2_state['angle'] = angle
+        servo2_state['position'] = 'custom'
+    else:
+        set_servo2_position(position or 'center')
     return jsonify(servo2_state)
 
 
